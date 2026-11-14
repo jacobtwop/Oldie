@@ -92,6 +92,11 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 .note h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px}
 .note p{margin:0;font-size:13.5px}
 .note.src{grid-column:1/-1}
+details.more{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+details.more summary{cursor:pointer;font-weight:700;font-size:13px}
+details.more textarea{margin-top:8px;width:100%;font:14px/1.5 var(--f-display);background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 11px;resize:vertical}
+.later-box{display:grid;gap:10px}
+.later-box textarea{width:100%;min-height:62vh;font:14.5px/1.55 var(--f-display);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:14px 16px;resize:vertical}
 details.qs{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
 details.qs summary{cursor:pointer;font-weight:700;font-size:13px}
 details.qs ul{margin:8px 0 2px;padding-left:18px;display:grid;gap:5px;font-size:13.5px}
@@ -413,7 +418,7 @@ var MOVES=[
 var LEVELS=[[0,'Seedling'],[500,'Sapling'],[1500,'Thicket'],[3000,'Grove'],[5000,'Wildwood'],[8000,'Entwife']];
 
 /* ---------- state ---------- */
-function defMeta(){return {days:{},sparks:0,goal:150,sprints:[],threads:{},pairs:{},theme:'',last:'10-1',tab:'sprint',log:[],updatedAt:0}}
+function defMeta(){return {days:{},sparks:0,goal:150,sprints:[],threads:{},pairs:{},theme:'',last:'10-1',tab:'sprint',log:[],notes:{},updatedAt:0}}
 function defBeat(id){return {text:'',done:false,checks:[],target:BY[id].target,hit:false,locks:[],updatedAt:0}}
 var state={beats:{},meta:defMeta()};
 var cur='10-1';
@@ -558,7 +563,7 @@ var toastT;
 
 function saveFile(name,text){var b=new Blob([text],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
 function backupNow(){saveFile('wildwood-backup-'+today()+'.json',JSON.stringify({beats:state.beats,meta:state.meta}));toast('Backup saved to your Downloads.')}
-function restoreFrom(f){var r=new FileReader();r.onload=function(){try{var s=JSON.parse(r.result);if(!s.beats)throw 0;if(s.seed){var n=0,t=Date.now();Object.keys(s.beats).forEach(function(id){if(!BY[id])return;var b=bs(id);if(!(b.text||'').trim()&&s.beats[id].text){b.text=s.beats[id].text;b.updatedAt=t;n++;scheduleSave('beat-'+id)}});saveLocal();renderMap();renderStage();renderTools();renderHeader();toast(n?('Added your draft text to '+n+' empty beats.'):'Those beats already have text, so nothing was changed.');return}var now=Date.now();Object.keys(s.beats).forEach(function(k){s.beats[k].updatedAt=now});state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});state.meta.updatedAt=now;saveLocal();cloudOn=true;cloudSchedule();renderMap();renderStage();renderTools();renderHeader();toast('Restored.')}catch(e){toast('That file did not look like a Wildwood backup.')}};r.readAsText(f)}
+function restoreFrom(f){var r=new FileReader();r.onload=function(){try{var s=JSON.parse(r.result);if(!s.beats&&!s.notes)throw 0;if(s.seed){var n=0,t=Date.now();if(s.notes){var nn=0;state.meta.notes=state.meta.notes||{};Object.keys(s.notes).forEach(function(k){if(!(state.meta.notes[k]||'').trim()){state.meta.notes[k]=s.notes[k];nn++}});if(nn){state.meta.updatedAt=t;scheduleSave('meta')}saveLocal();renderStage();renderMap();toast(nn?('Filed notes into '+nn+' places, including Later in the Novel.'):'Those notes are already filed, so nothing was changed.');if(!s.beats)return}if(!s.beats)return;Object.keys(s.beats).forEach(function(id){if(!BY[id])return;var b=bs(id);if(!(b.text||'').trim()&&s.beats[id].text){b.text=s.beats[id].text;b.updatedAt=t;n++;scheduleSave('beat-'+id)}});saveLocal();renderMap();renderStage();renderTools();renderHeader();toast(n?('Added your draft text to '+n+' empty beats.'):'Those beats already have text, so nothing was changed.');return}var now=Date.now();Object.keys(s.beats).forEach(function(k){s.beats[k].updatedAt=now});state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});state.meta.updatedAt=now;saveLocal();cloudOn=true;cloudSchedule();renderMap();renderStage();renderTools();renderHeader();toast('Restored.')}catch(e){toast('That file did not look like a Wildwood backup.')}};r.readAsText(f)}
 function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},3200)}
 var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var parts=[],raf=0;
@@ -620,12 +625,13 @@ function renderMap(){
     h+='<div class="chap c'+ch+'"><div class="chap-h"><h3>Chapter '+CHN[ch]+'</h3><span>'+fmt(proj)+' / '+fmt(CHT[ch])+'</span></div>';
     chapterBeats(ch).forEach(function(b){
       var s=bs(b.id),w=wc(s.text),pc=Math.min(100,Math.round((s.done?1:w/s.target)*100));
-      h+='<button class="beat-btn'+(s.done?' done':'')+'" data-id="'+b.id+'" aria-current="'+(b.id===cur)+'">'+
+      h+='<button class="beat-btn'+(s.done?' done':'')+'" data-id="'+b.id+'" aria-current="'+(!viewLater&&b.id===cur)+'">'+
         '<span class="n">'+b.id.replace('-','.')+'</span><span class="t">'+b.title+'</span><span class="w">'+(w||'–')+'/'+s.target+'</span>'+
         '<span class="mini"><i style="width:'+pc+'%"></i></span></button>';
     });
     h+='</div>';
   });
+  h+='<div class="chap"><div class="chap-h"><h3>After Chapter Thirteen</h3></div><button class="beat-btn" data-later="1" aria-current="'+viewLater+'"><span class="n">→</span><span class="t">Later in the Novel</span><span class="w"></span></button></div>';
   h+='<div class="beam"><svg viewBox="0 0 240 92" role="img" aria-label="Balance beam comparing Ten and Eleven">'+beamSvg()+'</svg><div class="legend" id="beam-l"></div></div>';
   $('map').innerHTML=h;
   var a=chapterProjected(10),b=chapterProjected(11),d=b-a;
@@ -643,7 +649,14 @@ function beamSvg(){
 }
 
 /* ---------- stage ---------- */
+var viewLater=false;
+function renderLater(){
+  $('stage').innerHTML='<div class="card later-box"><div class="crumb">After Chapter Thirteen</div><h2>Later in the Novel</h2><p style="margin:0;color:var(--muted);font-size:13px">Seeds, plants and open questions, so nothing is lost. Edit freely; it saves as you type.</p><textarea id="later" spellcheck="true" placeholder="Nothing here yet. Load your private notes file with Restore, or write your own."></textarea></div>';
+  var t=$('later');t.value=(state.meta.notes||{}).later||'';
+  t.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes.later=t.value;scheduleSave('meta')});
+}
 function renderStage(){
+  if(viewLater){renderLater();return}
   var b=BY[cur],s=bs(cur),w=wc(s.text);
   var h='<div class="card"><div class="crumb">Chapter '+CHN[b.ch]+' · beat '+b.n+' of '+chapterBeats(b.ch).length+'</div>'+
     '<h2>'+b.title+'</h2><div class="chips"><span class="chip '+b.kind+'">'+b.kind+'</span>'+
@@ -652,6 +665,7 @@ function renderStage(){
     '<div class="notes"><div class="note"><h3>What this beat means</h3><p>'+b.means+'</p></div>'+
     '<div class="note"><h3>By the end, something has changed</h3><p>'+b.shift+'</p></div>'+
     '<div class="note src"><h3>Where your words are</h3><p>'+b.anchor+'</p></div></div>'+
+    '<details class="more"><summary>Everything we decided</summary><textarea id="bn" rows="10" placeholder="Nothing filed here yet. Load your private notes file with Restore, or write your own."></textarea></details>'+
     '<details class="qs" open><summary>Questions to ask yourself</summary><ul>'+b.qs.map(function(q){return '<li>'+q+'</li>'}).join('')+'</ul></details>'+
     '<div class="checks"><h3>Done when</h3>'+b.checks.map(function(c,i){
       var on=!!s.checks[i];return '<label class="chk'+(on?' on':'')+'"><input type="checkbox" data-ck="'+i+'"'+(on?' checked':'')+'><span>'+c+'</span></label>'}).join('')+'</div>'+
@@ -664,6 +678,7 @@ function renderStage(){
       '<button class="btn go" id="b-done">'+(s.done?'Done ✓ (undo)':'Mark done')+'</button></div></div>'+
     '<textarea id="ta" spellcheck="true" placeholder="Write here, or paste the version you\'re trimming. Rough is fine."></textarea></div>'+locksHtml(s);
   $('stage').innerHTML=h;
+  var bnEl=$('bn');if(bnEl){bnEl.value=(state.meta.notes||{})[cur]||'';if(bnEl.value)bnEl.closest('details').open=false;bnEl.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes[cur]=bnEl.value;scheduleSave('meta')})}
   var ta=$('ta');ta.value=s.text;
   ta.addEventListener('input',onInput);
   $('tgt').addEventListener('change',function(e){var v=Math.max(50,Math.min(1500,parseInt(e.target.value,10)||b.target));bs(cur).target=v;e.target.value=v;scheduleSave('beat-'+cur);updateAll()});
@@ -1109,11 +1124,11 @@ async function runInsight(){
 /* ---------- nav ---------- */
 function go(id){
   if(!BY[id])return;
-  cur=id;state.meta.last=id;scheduleSave('meta');
+  viewLater=false;cur=id;state.meta.last=id;scheduleSave('meta');
   renderStage();renderMap();
   var st=$('stage');if(st&&window.innerWidth<900)st.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
 }
-$('map').addEventListener('click',function(e){var b=e.target.closest('.beat-btn[data-id]');if(b)go(b.getAttribute('data-id'))});
+$('map').addEventListener('click',function(e){var l=e.target.closest('.beat-btn[data-later]');if(l){viewLater=true;renderStage();renderMap();var st=$('stage');if(st&&window.innerWidth<900)st.scrollIntoView({block:'start'});return}var b=e.target.closest('.beat-btn[data-id]');if(b)go(b.getAttribute('data-id'))});
 $('p-today').addEventListener('click',function(){
   var g=[100,150,250,500],i=g.indexOf(state.meta.goal);state.meta.goal=g[(i+1)%g.length];scheduleSave('meta');renderHeader();toast('Daily goal: '+state.meta.goal+' words.')});
 $('p-theme').addEventListener('click',function(){
