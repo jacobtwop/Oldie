@@ -7,24 +7,32 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Mono:wght@400;500&display=swap">
 <style>
 /* Layout concept: a three-pane workbench (beat map | beat + writing window | tools), moon-and-sun chapter colours, war meters across the top. */
+/* Day: deep forest green, sun coming through the leaves. Night: deep purples by moonlight.
+   --card is the translucent surface for big panels, so the light shows faintly through them;
+   --panel / --panel2 stay solid for buttons, inputs and small boxes. */
 :root{
-  --bg:#E6ECE7; --panel:#F5F8F4; --panel2:#EDF2EC; --ink:#14201A; --muted:#58695F; --line:#C7D4CA;
-  --moon:#3F66A3; --sun:#A9700F; --wild:#2A8556; --blight:#7C3F74; --warn:#B4531F;
+  --bg:#123A29; --card:rgba(9,38,26,.74); --panel:#164531; --panel2:#1D5139; --ink:#F3F5E4; --muted:#B9D2BC; --line:#2E6A4B;
+  --moon:#A5C8F5; --sun:#F4C95D; --wild:#8EE5A6; --blight:#E1A0D2; --warn:#F6A36B; color-scheme:dark;
+  --sky:radial-gradient(42vmax 30vmax at 12% 4%,rgba(255,222,120,.32),transparent 70%),radial-gradient(21vmax 16vmax at 74% 11%,rgba(255,230,150,.28),transparent 68%),radial-gradient(12vmax 9vmax at 92% 38%,rgba(250,226,126,.26),transparent 68%),radial-gradient(9vmax 7vmax at 58% 27%,rgba(255,236,160,.20),transparent 68%),radial-gradient(16vmax 12vmax at 40% 52%,rgba(190,236,130,.16),transparent 70%),radial-gradient(10vmax 8vmax at 6% 58%,rgba(250,226,126,.24),transparent 68%),radial-gradient(8vmax 6vmax at 31% 76%,rgba(255,232,150,.20),transparent 68%),radial-gradient(13vmax 10vmax at 84% 80%,rgba(250,226,126,.20),transparent 68%),radial-gradient(24vmax 17vmax at 60% 97%,rgba(210,240,150,.18),transparent 70%),linear-gradient(118deg,transparent 26%,rgba(255,232,150,.08) 42%,transparent 58%),linear-gradient(180deg,#1B5037 0%,#123A29 55%,#0B2A1D 100%);
   --f-display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
   --f-write:'Newsreader',Georgia,'Times New Roman',serif;
   --f-mono:'DM Mono',ui-monospace,Menlo,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0D1512; --panel:#15201B; --panel2:#1B2923; --ink:#E5EEE8; --muted:#8FA397; --line:#28392F;
-    --moon:#8FB2E6; --sun:#E8B24F; --wild:#5CC48C; --blight:#C783BC; --warn:#F09A62; color-scheme:dark;
+  --bg:#170C30; --card:rgba(22,12,46,.76); --panel:#241446; --panel2:#2E1B58; --ink:#EEE9FB; --muted:#B9AEDB; --line:#46327A;
+  --moon:#B4C4FF; --sun:#F3C873; --wild:#86E3B6; --blight:#E9A0E6; --warn:#FFA877; color-scheme:dark;
+  --sky:radial-gradient(50vmax 36vmax at 86% 0%,rgba(184,164,255,.34),transparent 70%),radial-gradient(22vmax 16vmax at 82% 8%,rgba(232,224,255,.20),transparent 68%),radial-gradient(42vmax 30vmax at 5% 98%,rgba(136,76,208,.36),transparent 70%),radial-gradient(30vmax 20vmax at 46% 58%,rgba(100,66,190,.20),transparent 70%),radial-gradient(18vmax 12vmax at 12% 20%,rgba(120,150,235,.16),transparent 68%),radial-gradient(14vmax 10vmax at 70% 84%,rgba(160,120,230,.16),transparent 68%),linear-gradient(180deg,#22124A 0%,#170C30 55%,#0F0724 100%);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0D1512; --panel:#15201B; --panel2:#1B2923; --ink:#E5EEE8; --muted:#8FA397; --line:#28392F;
-  --moon:#8FB2E6; --sun:#E8B24F; --wild:#5CC48C; --blight:#C783BC; --warn:#F09A62; color-scheme:dark;
+  --bg:#170C30; --card:rgba(22,12,46,.76); --panel:#241446; --panel2:#2E1B58; --ink:#EEE9FB; --muted:#B9AEDB; --line:#46327A;
+  --moon:#B4C4FF; --sun:#F3C873; --wild:#86E3B6; --blight:#E9A0E6; --warn:#FFA877; color-scheme:dark;
+  --sky:radial-gradient(50vmax 36vmax at 86% 0%,rgba(184,164,255,.34),transparent 70%),radial-gradient(22vmax 16vmax at 82% 8%,rgba(232,224,255,.20),transparent 68%),radial-gradient(42vmax 30vmax at 5% 98%,rgba(136,76,208,.36),transparent 70%),radial-gradient(30vmax 20vmax at 46% 58%,rgba(100,66,190,.20),transparent 70%),radial-gradient(18vmax 12vmax at 12% 20%,rgba(120,150,235,.16),transparent 68%),radial-gradient(14vmax 10vmax at 70% 84%,rgba(160,120,230,.16),transparent 68%),linear-gradient(180deg,#22124A 0%,#170C30 55%,#0F0724 100%);
 }
 *{box-sizing:border-box}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--sky)}
+::selection{background:color-mix(in srgb,var(--wild) 38%,transparent);color:var(--ink)}
 body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--f-display);
   padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -33,7 +41,7 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 .wrap{max-width:1380px;margin:0 auto;display:grid;gap:14px}
 
 /* header */
-.top{display:grid;gap:12px;grid-template-columns:1fr;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.top{display:grid;gap:12px;grid-template-columns:1fr;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 .top-row{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between}
 .brand h1{font-size:22px;letter-spacing:-.01em}
 .brand p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
@@ -54,7 +62,7 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 .main{display:grid;gap:14px;grid-template-columns:1fr;align-items:start}
 @media(min-width:900px){.main{grid-template-columns:270px minmax(0,1fr)}.tools{grid-column:1/-1}}
 @media(min-width:1180px){.main{grid-template-columns:270px minmax(0,1fr) 330px}.tools{grid-column:auto}}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
 
 /* map */
 .map{display:grid;gap:12px}
@@ -92,7 +100,7 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 .note h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px}
 .note p{margin:0;font-size:13.5px}
 .note.src{grid-column:1/-1}
-details.more{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+details.more{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
 details.more summary{cursor:pointer;font-weight:700;font-size:13px}
 details.more textarea{margin-top:8px;width:100%;font:14px/1.5 var(--f-display);background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 11px;resize:vertical}
 .later-box{display:grid;gap:10px}
@@ -108,7 +116,7 @@ details.qs ul{margin:8px 0 2px;padding-left:18px;display:grid;gap:5px;font-size:
 .chk.on span{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--wild) 60%,transparent)}
 
 /* writer */
-.writer{background:var(--panel);border:1px solid var(--line);border-radius:14px;display:grid;gap:0;overflow:hidden}
+.writer{background:var(--card);border:1px solid var(--line);border-radius:14px;display:grid;gap:0;overflow:hidden}
 .w-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
 .countbox{display:flex;align-items:center;gap:12px}
 .ring{width:54px;height:54px;flex:none}
@@ -128,10 +136,16 @@ details.qs ul{margin:8px 0 2px;padding-left:18px;display:grid;gap:5px;font-size:
 .btn.go{background:var(--wild);color:var(--bg);border-color:transparent;font-weight:700}
 .btn.go:hover{filter:brightness(1.08)}
 .btn.on{background:var(--wild);color:var(--bg);border-color:transparent}
-#ta{width:100%;min-height:340px;resize:vertical;border:0;background:var(--panel);color:var(--ink);font:400 18px/1.62 var(--f-write);padding:18px max(16px,3vw);display:block}
+#ta{width:100%;min-height:340px;resize:vertical;border:0;background:transparent;caret-color:var(--sun);color:var(--ink);font:400 18px/1.62 var(--f-write);padding:18px max(16px,3vw);display:block}
 #ta::placeholder{color:var(--muted);font-style:italic}
 #ta:focus{outline:none}
-.writer.focus{position:fixed;inset:0;z-index:50;border-radius:0;grid-template-rows:auto 1fr;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* desktop: the writing window grows to the bottom of the beat map (left column) */
+@media(min-width:900px){
+  .stage{align-self:stretch;display:flex;flex-direction:column}
+  .stage>.writer:not(.focus){flex:1 0 auto;grid-template-rows:auto 1fr}
+  .stage>.writer:not(.focus) #ta{align-self:stretch;resize:none}
+}
+.writer.focus{position:fixed;inset:0;z-index:50;border-radius:0;background:linear-gradient(var(--card),var(--card)),var(--sky),var(--bg);grid-template-rows:auto 1fr;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 .writer.focus #ta{min-height:0;height:100%;resize:none;font-size:20px;max-width:760px;margin:0 auto}
 .writer.focus .w-head{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
 .stamp{position:absolute;pointer-events:none}
@@ -197,7 +211,7 @@ details.locks summary{cursor:pointer;font-weight:700;font-size:13px}
 .foot{color:var(--muted);font-size:12px;text-align:center}
 
 /* let-it-go overlay, trends, quiet mode */
-#letgo{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:24px;overflow:auto;animation:lgin .7s ease}
+#letgo{position:fixed;inset:0;z-index:100;background:linear-gradient(var(--card),var(--card)),var(--sky),var(--bg);display:grid;place-items:center;padding:24px;overflow:auto;animation:lgin .7s ease}
 #letgo[hidden]{display:none}
 @keyframes lgin{from{opacity:0}to{opacity:1}}
 .lg-box{max-width:600px;width:100%;margin:auto}
@@ -563,7 +577,7 @@ var toastT;
 
 function saveFile(name,text){var b=new Blob([text],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
 function backupNow(){saveFile('wildwood-backup-'+today()+'.json',JSON.stringify({beats:state.beats,meta:state.meta}));toast('Backup saved to your Downloads.')}
-function restoreFrom(f){var r=new FileReader();r.onload=function(){try{var s=JSON.parse(r.result);if(!s.beats&&!s.notes)throw 0;if(s.seed){var n=0,t=Date.now();if(s.notes){var nn=0;state.meta.notes=state.meta.notes||{};Object.keys(s.notes).forEach(function(k){if(!(state.meta.notes[k]||'').trim()){state.meta.notes[k]=s.notes[k];nn++}});if(nn){state.meta.updatedAt=t;scheduleSave('meta')}saveLocal();renderStage();renderMap();toast(nn?('Filed notes into '+nn+' places, including Later in the Novel.'):'Those notes are already filed, so nothing was changed.');if(!s.beats)return}if(!s.beats)return;Object.keys(s.beats).forEach(function(id){if(!BY[id])return;var b=bs(id);if(!(b.text||'').trim()&&s.beats[id].text){b.text=s.beats[id].text;b.updatedAt=t;n++;scheduleSave('beat-'+id)}});saveLocal();renderMap();renderStage();renderTools();renderHeader();toast(n?('Added your draft text to '+n+' empty beats.'):'Those beats already have text, so nothing was changed.');return}var now=Date.now();Object.keys(s.beats).forEach(function(k){s.beats[k].updatedAt=now});state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});state.meta.updatedAt=now;saveLocal();cloudOn=true;cloudSchedule();renderMap();renderStage();renderTools();renderHeader();toast('Restored.')}catch(e){toast('That file did not look like a Wildwood backup.')}};r.readAsText(f)}
+function restoreFrom(f){var r=new FileReader();r.onload=function(){try{var s=JSON.parse(r.result);if(!s.beats&&!s.notes)throw 0;if(s.seed){var n=0,t=Date.now();if(s.notes){var nn=0;state.meta.notes=state.meta.notes||{};Object.keys(s.notes).forEach(function(k){var cur=(state.meta.notes[k]||''),add=String(s.notes[k]||'');if(!add.trim())return;if(!cur.trim()){state.meta.notes[k]=add;nn++}else if(s.append&&cur.indexOf(add.split('\n')[0])<0){state.meta.notes[k]=cur.replace(/\s+$/,'')+'\n\n'+add;nn++}});if(nn){state.meta.updatedAt=t;scheduleSave('meta')}saveLocal();renderStage();renderMap();toast(nn?((s.append?'Added new notes to ':'Filed notes into ')+nn+' places'+(s.append?'.':', including Later in the Novel.')):(s.append?'Those notes are already there, so nothing was changed.':'Those notes are already filed, so nothing was changed.'));if(!s.beats)return}if(!s.beats)return;Object.keys(s.beats).forEach(function(id){if(!BY[id])return;var b=bs(id);if(!(b.text||'').trim()&&s.beats[id].text){b.text=s.beats[id].text;b.updatedAt=t;n++;scheduleSave('beat-'+id)}});saveLocal();renderMap();renderStage();renderTools();renderHeader();toast(n?('Added your draft text to '+n+' empty beats.'):'Those beats already have text, so nothing was changed.');return}var now=Date.now();Object.keys(s.beats).forEach(function(k){s.beats[k].updatedAt=now});state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});state.meta.updatedAt=now;saveLocal();cloudOn=true;cloudSchedule();renderMap();renderStage();renderTools();renderHeader();toast('Restored.')}catch(e){toast('That file did not look like a Wildwood backup.')}};r.readAsText(f)}
 function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},3200)}
 var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var parts=[],raf=0;
