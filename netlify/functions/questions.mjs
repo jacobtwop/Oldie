@@ -1,22 +1,30 @@
-// Cloud autosave for the workbench, kept in Netlify Blobs behind your passphrase.
-import { getStore } from "@netlify/blobs";
+// Asks the model for lock-in questions. The API key lives only in Netlify's settings.
 export default async (req) => {
+  if (req.method !== "POST") return new Response("POST only", { status: 405 });
   const need = process.env.WILDWOOD_PASSPHRASE;
-  if (!need) return new Response("set WILDWOOD_PASSPHRASE", { status: 500 });
-  if (req.headers.get("x-wildwood-key") !== need) return new Response("nope", { status: 401 });
-  const store = getStore("wildwood");
-  if (req.method === "GET") {
-    const data = await store.get("state", { type: "json" });
-    return new Response(JSON.stringify(data || {}), { headers: { "content-type": "application/json" } });
-  }
-  if (req.method === "PUT") {
-    const body = await req.text();
-    if (body.length > 4000000) return new Response("too big", { status: 413 });
-    let parsed;
-    try { parsed = JSON.parse(body); } catch (e) { return new Response("bad json", { status: 400 }); }
-    if (!parsed || !parsed.beats) return new Response("bad shape", { status: 400 });
-    await store.setJSON("state", parsed);
-    return new Response("ok");
-  }
-  return new Response("GET or PUT", { status: 405 });
+  if (need && req.headers.get("x-wildwood-key") !== need) return new Response("nope", { status: 401 });
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) return new Response("no key set", { status: 500 });
+  let prompt = "";
+  try { prompt = String((await req.json()).prompt || ""); } catch (e) {}
+  if (!prompt || prompt.length > 30000) return new Response("bad prompt", { status: 400 });
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+    body: JSON.stringify({
+      model: process.env.ANTHROPIC_MODEL || "claude-sonnet-4-5",
+      max_tokens: 500,
+      messages: [{ role: "user", content: prompt }],
+    }),
+  });
+  if (!r.ok) return new Response("upstream " + r.status, { status: 502 });
+  const data = await r.json();
+  const text = (data.content || []).map((c) => c.text || "").join("");
+  const m = text.match(/\[[\s\S]*\]/);
+  let questions = [];
+  try { questions = JSON.parse(m ? m[0] : "[]"); } catch (e) {}
+  if (!Array.isArray(questions) || !questions.length) return new Response("no questions", { status: 502 });
+  return new Response(JSON.stringify({ questions: questions.slice(0, 3).map(String) }), {
+    headers: { "content-type": "application/json" },
+  });
 };
