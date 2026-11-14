@@ -400,7 +400,7 @@ function docData(key){return key==='meta'?state.meta:state.beats[key.slice(5)]}
 function scheduleSave(key){
   var d=docData(key); if(d) d.updatedAt=Date.now();
   saveLocal();
-  if(!dbc){return}
+  if(!dbc){cloudSchedule();return}
   setSync('saving');
   clearTimeout(timers[key]);
   timers[key]=setTimeout(function(){pend[key]=JSON.parse(JSON.stringify(docData(key)));flush(key)},900);
@@ -419,7 +419,47 @@ function flush(key){
 }
 function setSync(s){
   syncState=s;var el=$('p-sync');if(!el)return;
-  el.textContent=s==='saved'?'Saved to your account':s==='saving'?'Saving…':s==='loading'?'Connecting…':'Saved on this device';
+  el.textContent=s==='saved'?'Saved to the cloud':s==='saving'?'Saving…':s==='loading'?'Connecting…':'Saved on this device';
+}
+
+/* ---------- cloud autosave (Netlify Blobs) ---------- */
+var cloudT=null,cloudBusy=false,cloudAsked=false,cloudOn=true;
+async function cloudCall(method,body){
+  var pass='';try{pass=localStorage.getItem('wwb.pass')||''}catch(e){}
+  var r=await fetch('/.netlify/functions/store',{method:method,headers:{'content-type':'application/json','x-wildwood-key':pass},body:body});
+  if(r.status===401&&!cloudAsked){cloudAsked=true;var p=window.prompt('Passphrase for cloud saving (the one you set in Netlify):');if(p){try{localStorage.setItem('wwb.pass',p)}catch(e){}cloudAsked=false;return cloudCall(method,body)}}
+  if(!r.ok)throw new Error('cloud '+r.status);
+  return r;
+}
+function cloudSchedule(){
+  if(!cloudOn)return;
+  setSync('saving');clearTimeout(cloudT);
+  cloudT=setTimeout(cloudPush,1500);
+}
+async function cloudPush(){
+  if(cloudBusy){cloudT=setTimeout(cloudPush,1500);return}
+  cloudBusy=true;
+  try{await cloudCall('PUT',JSON.stringify({beats:state.beats,meta:state.meta}));setSync('saved')}
+  catch(e){setSync('local')}
+  cloudBusy=false;
+}
+async function cloudPull(){
+  try{
+    setSync('loading');
+    var r=await cloudCall('GET');var s=await r.json();var changed=false,push=false;
+    if(s&&s.beats){
+      Object.keys(s.beats).forEach(function(id){
+        if(!BY[id])return;var c=state.beats[id],d=s.beats[id];
+        if(!c||(d.updatedAt||0)>(c.updatedAt||0)){state.beats[id]=Object.assign(defBeat(id),d);changed=true}
+        else if((c.updatedAt||0)>(d.updatedAt||0))push=true;
+      });
+      Object.keys(state.beats).forEach(function(id){if(!s.beats[id])push=true});
+      if(s.meta&&(s.meta.updatedAt||0)>(state.meta.updatedAt||0)){state.meta=Object.assign(defMeta(),s.meta);changed=true}
+      else if((state.meta.updatedAt||0)>((s.meta||{}).updatedAt||0))push=true;
+    }else push=true;
+    if(changed){saveLocal();renderMap();renderStage();renderTools();renderHeader()}
+    if(push)await cloudPush();else setSync('saved');
+  }catch(e){cloudOn=false;setSync('local')}
 }
 async function bootStore(){
   try{
@@ -480,7 +520,7 @@ var toastT;
 
 function saveFile(name,text){var b=new Blob([text],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
 function backupNow(){saveFile('wildwood-backup-'+today()+'.json',JSON.stringify({beats:state.beats,meta:state.meta}));toast('Backup saved to your Downloads.')}
-function restoreFrom(f){var r=new FileReader();r.onload=function(){try{var s=JSON.parse(r.result);if(!s.beats)throw 0;state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});saveLocal();renderMap();renderStage();renderTools();renderHeader();toast('Restored.')}catch(e){toast('That file did not look like a Wildwood backup.')}};r.readAsText(f)}
+function restoreFrom(f){var r=new FileReader();r.onload=function(){try{var s=JSON.parse(r.result);if(!s.beats)throw 0;var now=Date.now();Object.keys(s.beats).forEach(function(k){s.beats[k].updatedAt=now});state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});state.meta.updatedAt=now;saveLocal();cloudOn=true;cloudSchedule();renderMap();renderStage();renderTools();renderHeader();toast('Restored.')}catch(e){toast('That file did not look like a Wildwood backup.')}};r.readAsText(f)}
 function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},3200)}
 var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var parts=[],raf=0;
@@ -964,7 +1004,7 @@ function renderAll(){applyTheme();renderHeader();renderMap();renderStage();rende
 loadLocal();loadSession();
 if(BY[state.meta.last])cur=state.meta.last;
 renderAll();
-setSync('local');bootStore();
+setSync('local');bootStore();if(!window.claude)cloudPull();
 $('p-bak').onclick=backupNow;$('p-res').onclick=function(){$('p-file').click()};$('p-file').onchange=function(e){if(e.target.files[0])restoreFrom(e.target.files[0]);e.target.value=''};
 setInterval(function(){if(sprint&&state.meta.tab==='sprint'){var b=$('big-time');if(b){var l=Math.max(0,Math.ceil((sprint.end-Date.now())/1000));b.textContent=Math.floor(l/60)+':'+String(l%60).padStart(2,'0')}}},1000);
 })();
