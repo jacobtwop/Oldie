@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Wildwood War Workbench</title>
+<title>Oldie Workbench</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.bg%7Bfill:%23123A29%7D.t%7Bfill:%23F4C95D%7D.m%7Bfill:%23F3F5E4%7D%40media (prefers-color-scheme:dark)%7B.bg%7Bfill:%23241446%7D.t%7Bfill:%23F3C873%7D%7D%3C/style%3E%3Crect class='bg' width='64' height='64' rx='14'/%3E%3Cpath class='t' d='M32 7 L40 20 H36 L44 32 H39 L48 45 H35 V56 H29 V45 H16 L25 32 H20 L28 20 H24 Z'/%3E%3Ccircle class='m' cx='49' cy='14' r='4'/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADFklEQVR4AcRWTUhUURg9901pMwM6M5Sl1igVNRaE4cJRgsyFYlQLK6mNRURUtBHcVBD9kAQt3LhoEf3QtogIKl1Um3KCIjdhRUYbDQvKjLSNc7vn6XuOvvfmvTdOeHmf97vnO9/5zlyezGjIWJHqykisLnEhVp/oVTEaq6+S+YmE0kr0UpszkLFMA9HkhhYttOwdhDgHiCYVJcjbEkpLNFGbMzjLkNYNKGfNQgs8AkQZ/vsSZZxlmNCKt8WjELiZy9xoKABGLr1C064X1W2KaWIqfAgQpchhnd6zGowcWlWLKNMg2zUhkFQn309NZRgHalfowXy+QDgYRM+Zs3h7956+8zyfw9nKhH8Dmnpzrh6sNPWYEzMBlTQma7F7RwNixUX6zrOC5z4SSd5AxVzU/XSsYRXWlwRNInNiJuAxUTdQoT6LR/YMrTSyFB3N1leGGGszNDxNvcLDZ8/x49e4vvNs1DJ33wYutcYRLAhkaug5Mdb0g/rzZ3ISp7ouY+u+vfrOs4Itj28DR28M4cStIYsQMdYsBRfAt4FIMICu/dbXhhhrLvMsZd8GutoqEA0vsQgRY81ScAF8GWjZEsGu6pijJGvkOBJsCp4N8HqvtM3+79to6RA55OoHD388G+D18prdNMkh141n1D0bOHn7M9Z1vsHg8ITRa9lZI4dcS9EB8GyA/Z0t5agqDzG1DdbIsS06gJ4N1Kgvn+ONKx1kZmFyyJ1FsmeeDIQKNPS0r4UQIruaqgohdC571NH18WTgfOsalEcLXcUMArnsMc7ZdlcD2zcW6d/52UTsavytwF67WibmaiC+vBDdvcOW6P/029Rhbsdhr0lySFwN3HnxHd1PvloiNTRuSjK347DXJDkkrgYc+vIG8yfZaN7U/ApJjKobkAN++/LHlwOaFItngLM1mRbXJDAGn4svXbzjNRjMfbaDMzlbG0u9/yIljvgVWChfIn2Ys9U7oD5+/+B9mZ7aCciRhQq798sRzhp7+eEBuboBJj9THx+nJ/5uhpQXlZE+Fd+ILzSm+6XSkn3U5gzOmsaBfwAAAP//AkTDsQAAAAZJREFUAwA5JhRURSmkrwAAAABJRU5ErkJggg==">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
 <meta name="theme-color" content="#123A29">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Mono:wght@400;500&display=swap">
 <style>
-/* Layout concept: a three-pane workbench (beat map | beat + writing window | tools), moon-and-sun chapter colours, war meters across the top. */
+/* Layout concept: a three-pane workbench (book map | chapter or beat + writing window | tools), moon-and-sun colours, war meters across the top. */
 /* Day: deep forest green, sun coming through the leaves. Night: deep purples by moonlight.
    --card is the translucent surface for big panels, so the light shows faintly through them;
    --panel / --panel2 stay solid for buttons, inputs and small boxes. */
@@ -232,6 +232,42 @@ body.letgo .wrap,body.letgo #fx{visibility:hidden}
 body.quiet .war,body.quiet #tools,body.quiet .qs,body.quiet .checks,body.quiet .foot,body.quiet .notes .note:nth-child(n+2){display:none}
 body.quiet .notes{grid-template-columns:1fr}
 @media(min-width:900px){body.quiet .main{grid-template-columns:270px minmax(0,1fr)}}
+
+/* whole-book additions (Nov 14) */
+.part{display:grid;gap:6px}
+.part-h{display:grid;grid-template-columns:auto auto 1fr auto;gap:2px 8px;align-items:baseline;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.part-h:hover{border-color:var(--muted)}
+.part.open>.part-h{border-color:var(--wild)}
+.part-h .car{color:var(--muted);font-size:12px;width:12px}
+.part-h .pn{font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.045em}
+.part-h .pt{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.part-h .pw{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.part-b{display:grid;gap:6px;padding-left:8px;border-left:2px solid var(--line);margin-left:6px}
+.beat-btn .n{min-width:20px}
+.beat-btn.plain{grid-template-columns:auto 1fr auto}
+.beat-btn.s-PUBLISHED{border-left:3px solid var(--moon)}
+.beat-btn.s-DRAFT{border-left:3px solid var(--wild)}
+.beat-btn.s-REVISING{border-left:3px solid var(--sun)}
+.beat-btn.s-OUTLINE{border-left:3px solid var(--blight)}
+.beat-btn.s-PLANNED{border-left:3px dashed var(--warn)}
+.beat-btn.s-EMPTY,.beat-btn.s-REF{border-left:3px dashed var(--line)}
+.beat-btn .nt{color:var(--muted);font-size:11px;margin-left:4px}
+.untitled{color:var(--muted);font-weight:400;font-style:italic}
+.chip.EMPTY{color:var(--muted)} .chip.PLANNED{color:var(--warn)} .chip.OUTLINE{color:var(--blight)} .chip.DRAFT{color:var(--wild)} .chip.REVISING{color:var(--sun)} .chip.PUBLISHED{color:var(--moon)} .chip.REF{color:var(--muted)}
+button.chipbtn{background:none;cursor:pointer;font-family:inherit}
+button.chipbtn:hover{background:var(--panel2)}
+.titl{font:700 26px/1.2 var(--f-display);letter-spacing:-.015em;background:transparent;border:0;border-bottom:1px dashed var(--line);color:var(--ink);width:100%;padding:2px 0;margin-top:2px}
+.titl::placeholder{color:var(--muted);font-weight:400;font-style:italic}
+.titl:focus{outline:none;border-bottom-color:var(--wild)}
+.lockbar{border-left:3px solid var(--moon);background:var(--panel2);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--muted)}
+.fld select{font:14px/1.4 var(--f-display);background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 9px;width:100%}
+.hit{display:grid;gap:2px;text-align:left;width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+.hit:hover{border-color:var(--wild)}
+.hit b{font-size:12.5px}.hit b small{font-weight:400;color:var(--muted);font-family:var(--f-mono)}
+.hit span{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.hit mark{background:color-mix(in srgb,var(--sun) 40%,transparent);color:var(--ink);border-radius:3px;padding:0 1px}
+table.w tr.ph td{padding-top:8px}
+table.w tr.sub td{color:var(--muted);padding-left:14px}
 </style>
 </head>
 <body>
@@ -240,8 +276,8 @@ body.quiet .notes{grid-template-columns:1fr}
   <header class="top">
     <div class="top-row">
       <div class="brand">
-        <h1>Wildwood War Workbench</h1>
-        <p>Oldie, Chapters Ten through Fourteen. Every word on this page that isn't yours is a note or a question.</p>
+        <h1>Oldie Workbench</h1>
+        <p>Oldie, Prelude to Coda. Chapters Ten to Fourteen carry beat plans; every other word here that isn't yours is a note or a question.</p>
       </div>
       <div class="stats">
         <span class="pill" id="p-timer" hidden></span>
@@ -266,7 +302,7 @@ body.quiet .notes{grid-template-columns:1fr}
   </header>
 
   <div class="main">
-    <aside class="card map" id="map" aria-label="Beat map"></aside>
+    <aside class="card map" id="map" aria-label="Book map"></aside>
     <main class="stage" id="stage"></main>
     <aside class="card tools" id="tools" aria-label="Tools"></aside>
   </div>
@@ -383,7 +419,44 @@ var BEATS=[
 {"id": "14-5", "ch": 14, "n": 5, "title": "Sailorboy: from outside", "kind": "REVISE", "existing": 124, "target": 250, "pov": "Wide lens (Oldie), outside Sailorboy", "anchor": "Old Thirteen draft, \"Sailorboy was next\" through \"…You were there, too.\" Currently he tells it fluently; the new version wears his words down.", "means": "Firm rule: no intimate interiority with Sailorboy; he is seen from outside. He turns white and shakes, and still tells the story himself, in order, but less eloquent and more animalistic: words worn down but followable. He points at his Goddess: \"You were there, too.\" The memory behind it is his origin: his first memory is being on a beach and finding a lost sweater (there was no shipwreck, and nobody asks what came before), then Diana, the Dream of the Sea, her leaving for the deepest depths, the Leviathan's promise to return for him if he needs her, then his capture and the cages. Optimally it all goes in; if not, the first parts can wait for their own Ace.", "shift": "Maeve is handed the line that makes her reach for the Ace.", "qs": ["How much of the origin can an outside view carry in 250 words?", "What does his body do before he speaks?", "How worn down are his words, and can the reader still follow the order?"], "checks": ["Seen from outside; he still tells it, in order, animalistic", "Ends on his line to Maeve", "Decide what waits for its own Ace"], "threads": []},
 {"id": "14-6", "ch": 14, "n": 6, "title": "Maeve: the assassination", "kind": "NEW", "existing": 0, "target": 330, "pov": "Maeve (close, inside)", "anchor": "New.", "means": "She jokingly lunges for the Ace to see what Sailorboy means, expecting the cages. Instead she sees her own assassination, from weeks ago; the Ace is random every time. No formal shape this time: immediate, gritty, sharp. Their flight (a fake thing made up by OVL to get them out of town) and their murder, with a fair amount of as-yet unwritten setup.", "shift": "The joke dies in Her hands.", "qs": ["What is the first sensory detail?", "How much setup can She carry without anyone explaining?", "Where does She come out of it?"], "checks": ["No hymnal, no fable", "Immediate and gritty", "The joke comes before the lunge"], "threads": []}
 ];
+/* ---------- whole-book units (Nov 14): outside Ten to Fourteen, each chapter is one unit.
+   Titles, statuses, chapter text and notes arrive from your private files through Restore, so none of that lives in this page. ---------- */
+var DETAIL=[10,11,12,13,14];
+function plainUnit(id,ch,n,kind,x){var b={id:id,ch:ch,n:n,title:'',kind:kind,existing:0,target:2000,pov:'',anchor:'',means:'',shift:'',qs:[],checks:[],threads:[],plain:true};if(x)for(var k in x)b[k]=x[k];return b}
+(function(){
+  BEATS.push(plainUnit('0-1',0,1,'CHAPTER'));
+  for(var c=1;c<=56;c++){
+    if(DETAIL.indexOf(c)>-1)BEATS.push(plainUnit(c+'-0',c,0,'REF',{title:'Old draft & chapter notes'}));
+    else BEATS.push(plainUnit(c+'-1',c,1,'CHAPTER'));
+  }
+  BEATS.push(plainUnit('57-1',57,1,'CHAPTER'));
+  [58,59,60].forEach(function(c){BEATS.push(plainUnit(c+'-1',c,1,'CHAPTER',{defStatus:'REF'}))});
+  for(var p=1;p<=8;p++)BEATS.push(plainUnit((100+p)+'-1',100+p,1,'PART',{title:'Part notes',notesOnly:true,part:p}));
+  BEATS.push(plainUnit('99-1',99,1,'BOOK',{title:'Whole-book notes',notesOnly:true}));
+  BEATS.push(plainUnit('99-2',99,2,'BOOK',{title:'Complete notes log, in order',notesOnly:true}));
+})();
 var BY={}; BEATS.forEach(function(b){BY[b.id]=b});
+var PARTS=[
+ {id:'bk',label:'Across the book',chs:[],extra:['99-1','99-2']},
+ {id:'pre',label:'Prelude',chs:[0]},
+ {id:'p1',label:'Part One',n:1,chs:[1,2,3,4,5,6,7]},
+ {id:'p2',label:'Part Two',n:2,chs:[8,9,10,11,12,13,14]},
+ {id:'p3',label:'Part Three',n:3,chs:[15,16,17,18,19,20,21]},
+ {id:'p4',label:'Part Four',n:4,chs:[22,23,24,25,26,27,28]},
+ {id:'p5',label:'Part Five',n:5,chs:[29,30,31,32,33,34,35]},
+ {id:'p6',label:'Part Six',n:6,chs:[36,37,38,39,40,41,42]},
+ {id:'p7',label:'Part Seven',n:7,chs:[43,44,45,46,47,48,49]},
+ {id:'p8',label:'Finale & Coda',n:8,chs:[50,51,52,53,54,55,56,57]},
+ {id:'bm',label:'Back matter',chs:[58,59,60]}
+];
+function partById(id){for(var i=0;i<PARTS.length;i++)if(PARTS[i].id===id)return PARTS[i];return PARTS[0]}
+function partOfCh(ch){for(var i=0;i<PARTS.length;i++)if(PARTS[i].chs.indexOf(ch)>-1)return PARTS[i];return partById('bk')}
+function partOfUnit(id){var b=BY[id];if(!b)return partById('pre');if(b.part)return partById('p'+b.part);return b.ch>=99?partById('bk'):partOfCh(b.ch)}
+var STATUSES=['EMPTY','PLANNED','OUTLINE','DRAFT','REVISING','PUBLISHED'];
+var ONES=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'],TENS=['','','Twenty','Thirty','Forty','Fifty','Sixty'];
+function numWord(n){if(n<20)return ONES[n];var o=n%10;return TENS[Math.floor(n/10)]+(o?'-'+ONES[o]:'')}
+function chLabel(ch){return ch===0?'Prelude':ch===57?'Coda':(ch>=58&&ch<=60)?'Back matter':'Chapter '+numWord(ch)}
+function chNum(ch){return ch===0?'Pre':ch===57?'Coda':ch>57?'App':String(ch)}
 var CH_TARGET=2000;
 var CHN={10:'Ten',11:'Eleven',12:'Twelve',13:'Thirteen',14:'Fourteen'};
 var CHT={10:2000,11:2000,12:1075,13:1700,14:1880};
@@ -438,7 +511,11 @@ var MOVES=[
 var LEVELS=[[0,'Seedling'],[500,'Sapling'],[1500,'Thicket'],[3000,'Grove'],[5000,'Wildwood'],[8000,'Entwife']];
 
 /* ---------- state ---------- */
-function defMeta(){return {days:{},sparks:0,goal:150,sprints:[],threads:{},pairs:{},theme:'',last:'10-1',tab:'sprint',log:[],notes:{},layout:2,updatedAt:0}}
+function defMeta(){return {days:{},sparks:0,goal:150,sprints:[],threads:{},pairs:{},theme:'',last:'10-1',tab:'sprint',log:[],notes:{},titles:{},partNames:{},status:{},layout:2,updatedAt:0}}
+function chTitle(ch){var t=(state.meta.titles||{})[String(ch)];return t||''}
+function unitStatus(b){if(b.kind==='REF')return 'OLD DRAFT';if(b.notesOnly)return '';return (state.meta.status||{})[b.id]||b.defStatus||'EMPTY'}
+function unitLabel(b){return b.plain?(chTitle(b.ch)||chLabel(b.ch)):b.title}
+function uLabel(b){if(!b.plain)return b.id.replace('-','.')+' '+b.title;if(b.kind==='PART')return partOfUnit(b.id).label+' notes';if(b.kind==='BOOK')return b.title;var ct=chTitle(b.ch);return chLabel(b.ch)+(ct?' \u00B7 '+ct:'')+(b.kind==='REF'?' (old draft)':'')}
 /* ---------- layout 2 (Nov 14): Twelve split into Twelve and Thirteen, memories become Fourteen ---------- */
 var LAYOUT=2;
 var MIG={'12-1':'12-2','12-2':'12-3','12-3':'13-1','12-4':'13-2','12-5':'13-3','12-6':'13-4','12-7':'13-5','13-1':'14-1','13-2':'14-2','13-3':'14-3','13-4':'14-4','13-5':'14-5','13-6':'14-6'};
@@ -470,7 +547,10 @@ function $(id){return document.getElementById(id)}
 
 /* ---------- persistence ---------- */
 var timers={},pend={},busy={};
-function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}}
+var lsT=null,lsWarned=false;
+function saveLocal(){clearTimeout(lsT);lsT=setTimeout(saveLocalNow,350)}
+function saveLocalNow(){clearTimeout(lsT);lsT=null;try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){if(!lsWarned){lsWarned=true;toast('This browser has run out of room to save locally. Take a Backup now; the cloud copy keeps saving.',9000)}}}
+window.addEventListener('pagehide',saveLocalNow);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')saveLocalNow()});
 function loadLocal(){
   try{var raw=localStorage.getItem(LS),s=JSON.parse(raw||'null');
     if(s&&s.beats&&((s.meta||{}).layout||1)<LAYOUT){
@@ -583,14 +663,17 @@ async function bootStore(){
 }
 
 /* ---------- derived numbers ---------- */
-function chapterBeats(ch){return BEATS.filter(function(b){return b.ch===ch})}
-function beatWords(b){return wc(bs(b.id).text)}
-function beatProjected(b){var s=bs(b.id),w=wc(s.text);return w>0?w:(s.done?s.target:s.target)}
+var wcc={};
+function pk(id){return state.beats[id]||null}
+function wcb(id){var s=state.beats[id];if(!s)return 0;var c=wcc[id];if(c&&c.t===s.text)return c.n;var n=wc(s.text);wcc[id]={t:s.text,n:n};return n}
+function chapterBeats(ch){return BEATS.filter(function(b){return b.ch===ch&&b.kind!=='REF'})}
+function beatWords(b){return wcb(b.id)}
+function beatProjected(b){var s=pk(b.id),w=wcb(b.id),t=(s&&s.target)||b.target;return w>0?w:t}
 function chapterWords(ch){return chapterBeats(ch).reduce(function(a,b){return a+beatWords(b)},0)}
 function chapterProjected(ch){return chapterBeats(ch).reduce(function(a,b){return a+beatProjected(b)},0)}
 function overallProgress(){
   var num=0,den=0;
-  BEATS.filter(function(b){return b.ch<=11}).forEach(function(b){var s=bs(b.id);den+=s.target;num+=s.done?s.target:Math.min(wc(s.text),s.target)});
+  BEATS.filter(function(b){return b.ch===10||b.ch===11}).forEach(function(b){var s=bs(b.id);den+=s.target;num+=s.done?s.target:Math.min(wc(s.text),s.target)});
   return den?num/den:0;
 }
 function level(){
@@ -603,8 +686,58 @@ function level(){
 var toastT;
 
 function saveFile(name,text){var b=new Blob([text],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
-function backupNow(){saveFile('wildwood-backup-'+today()+'.json',JSON.stringify({beats:state.beats,meta:state.meta}));toast('Backup saved to your Downloads.')}
-function restoreFrom(f){var r=new FileReader();r.onload=function(){try{var s=JSON.parse(r.result);if(!s.beats&&!s.notes)throw 0;if(s.seed&&s.append&&!(s.layout>=LAYOUT)){toast('That notes file is from before the renumbering. Use the newer one (renumbered) instead.',7000);return}if(s.seed&&!(s.layout>=LAYOUT)){s=Object.assign({},s);if(s.notes)s.notes=mapKeys(s.notes);if(s.beats)s.beats=mapKeys(s.beats)}if(!s.seed&&s.beats){var ms=migrateState({beats:s.beats,meta:s.meta||{}});s={beats:ms.beats,meta:ms.meta}}if(s.seed){var n=0,t=Date.now();if(s.notes){var nn=0;state.meta.notes=state.meta.notes||{};Object.keys(s.notes).forEach(function(k){var cur=(state.meta.notes[k]||''),add=String(s.notes[k]||'');if(!add.trim())return;if(!cur.trim()){state.meta.notes[k]=add;nn++}else if(s.append&&cur.indexOf(add.split('\n')[0])<0){state.meta.notes[k]=cur.replace(/\s+$/,'')+'\n\n'+add;nn++}});if(nn){state.meta.updatedAt=t;scheduleSave('meta')}saveLocal();renderStage();renderMap();toast(nn?((s.append?'Added new notes to ':'Filed notes into ')+nn+' places'+(s.append?'.':', including Later in the Novel.')):(s.append?'Those notes are already there, so nothing was changed.':'Those notes are already filed, so nothing was changed.'));if(!s.beats)return}if(!s.beats)return;Object.keys(s.beats).forEach(function(id){if(!BY[id])return;var b=bs(id);if(!(b.text||'').trim()&&s.beats[id].text){b.text=s.beats[id].text;b.updatedAt=t;n++;scheduleSave('beat-'+id)}});saveLocal();renderMap();renderStage();renderTools();renderHeader();toast(n?('Added your draft text to '+n+' empty beats.'):'Those beats already have text, so nothing was changed.');return}var now=Date.now();Object.keys(s.beats).forEach(function(k){s.beats[k].updatedAt=now});state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});state.meta.updatedAt=now;saveLocal();cloudOn=true;cloudSchedule();renderMap();renderStage();renderTools();renderHeader();toast('Restored.')}catch(e){toast('That file did not look like a Wildwood backup.')}};r.readAsText(f)}
+function backupNow(){saveFile('oldie-workbench-backup-'+today()+'.json',JSON.stringify({beats:state.beats,meta:state.meta}));toast('Backup saved to your Downloads.')}
+function seedIn(s){
+  var t=Date.now(),m=state.meta,meta=0,nn=0,n=0;
+  m.titles=m.titles||{};m.partNames=m.partNames||{};m.status=m.status||{};m.notes=m.notes||{};
+  if(s.titles)Object.keys(s.titles).forEach(function(k){if(!String(m.titles[k]||'').trim()&&s.titles[k]){m.titles[k]=s.titles[k];meta++}});
+  if(s.partNames)Object.keys(s.partNames).forEach(function(k){if(!String(m.partNames[k]||'').trim()&&s.partNames[k]){m.partNames[k]=s.partNames[k];meta++}});
+  if(s.status)Object.keys(s.status).forEach(function(k){if(!m.status[k]&&s.status[k]){m.status[k]=s.status[k];meta++}});
+  if(s.notes)Object.keys(s.notes).forEach(function(k){
+    var cur=(m.notes[k]||''),add=String(s.notes[k]||'');
+    if(!add.trim())return;
+    if(!cur.trim()){m.notes[k]=add;nn++}
+    else if(s.append){
+      var have={};cur.split('\n').forEach(function(x){x=x.trim();if(x)have[x]=1});
+      var out=[],hdr='',ph=false;
+      add.split('\n').forEach(function(x){var tx=x.trim();if(!tx)return;
+        if(/^\[.*\]$/.test(tx)){hdr=x;ph=false;return}
+        if(have[tx])return;
+        if(hdr&&!ph){out.push('',hdr);ph=true}
+        out.push(x)});
+      if(out.length){m.notes[k]=cur.replace(/\s+$/,'')+'\n'+out.join('\n');nn++}
+    }
+  });
+  if(meta||nn){m.updatedAt=t;scheduleSave('meta')}
+  if(s.beats)Object.keys(s.beats).forEach(function(id){
+    if(!BY[id])return;var b=bs(id),sb=s.beats[id];
+    if(!(b.text||'').trim()&&sb&&sb.text){b.text=sb.text;if(sb.target)b.target=sb.target;b.hit=wc(b.text)>=b.target;b.updatedAt=t;n++;scheduleSave('beat-'+id)}
+  });
+  saveLocal();renderMap();renderStage();renderTools();renderHeader();
+  var bits=[];
+  if(meta)bits.push('filed '+meta+' titles and statuses');
+  if(n)bits.push('added text to '+n+' empty chapters');
+  if(nn)bits.push((s.append?'added':'filed')+' notes in '+nn+' places');
+  toast(bits.length?(bits[0].charAt(0).toUpperCase()+bits.join(', ').slice(1)+'.'):'Everything in that file is already here, so nothing was changed.',7000);
+}
+function restoreFrom(f){
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var s=JSON.parse(r.result);
+      if(!s.beats&&!s.notes&&!s.titles&&!s.status&&!s.partNames)throw 0;
+      if(s.seed&&s.append&&!(s.layout>=LAYOUT)){toast('That notes file is from before the renumbering. Use the newer one (renumbered) instead.',7000);return}
+      if(s.seed&&!(s.layout>=LAYOUT)){s=Object.assign({},s);if(s.notes)s.notes=mapKeys(s.notes);if(s.beats)s.beats=mapKeys(s.beats)}
+      if(!s.seed&&s.beats){var ms=migrateState({beats:s.beats,meta:s.meta||{}});s={beats:ms.beats,meta:ms.meta}}
+      if(s.seed){seedIn(s);return}
+      var now=Date.now();
+      Object.keys(s.beats).forEach(function(k){s.beats[k].updatedAt=now});
+      state.beats=s.beats;state.meta=Object.assign(defMeta(),s.meta||{});state.meta.updatedAt=now;
+      saveLocal();cloudOn=true;cloudSchedule();renderMap();renderStage();renderTools();renderHeader();toast('Restored.');
+    }catch(e){toast('That file did not look like a backup or notes file from this workbench.')}
+  };
+  r.readAsText(f);
+}
 function toast(msg,ms){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},ms||3200)}
 var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var parts=[],raf=0;
@@ -656,27 +789,52 @@ function renderTimer(){
 }
 
 /* ---------- map ---------- */
+var partOpen={};
+function rowHtml(b){
+  var w=wcb(b.id),s=pk(b.id),isCur=(!viewLater&&b.id===cur);
+  var note=((state.meta.notes||{})[b.id]||'').trim()?'<span class="nt" title="Has notes">✎</span>':'';
+  if(b.plain){
+    var st=unitStatus(b),n,t;
+    if(b.kind==='CHAPTER'){n=chNum(b.ch);var ct=chTitle(b.ch);t=ct?esc(ct):'<span class="untitled">Untitled</span>'}
+    else if(b.kind==='REF'){n='old';t='Old draft & chapter notes'}
+    else if(b.kind==='PART'){n='·';t='Part notes'}
+    else{n='·';t=esc(b.title)}
+    var sc=(st&&st!=='OLD DRAFT')?' s-'+st:'';
+    return '<button class="beat-btn plain'+sc+((s&&s.done)?' done':'')+'" data-id="'+b.id+'" aria-current="'+isCur+'"><span class="n">'+n+'</span><span class="t">'+t+note+'</span><span class="w">'+(w?fmt(w):'–')+'</span></button>';
+  }
+  var tg=(s&&s.target)||b.target,pc=Math.min(100,Math.round(((s&&s.done)?1:w/tg)*100));
+  return '<button class="beat-btn'+((s&&s.done)?' done':'')+'" data-id="'+b.id+'" aria-current="'+isCur+'"><span class="n">'+b.id.replace('-','.')+'</span><span class="t">'+b.title+note+'</span><span class="w">'+(w||'–')+'/'+tg+'</span><span class="mini"><i style="width:'+pc+'%"></i></span></button>';
+}
+function detailHtml(ch){
+  var proj=chapterProjected(ch),ct=chTitle(ch);
+  var h='<div class="chap c'+ch+'"><div class="chap-h"><h3>'+chLabel(ch)+(ct?' · '+esc(ct):'')+'</h3><span>'+fmt(proj)+' / '+fmt(CHT[ch])+'</span></div>';
+  h+=rowHtml(BY[ch+'-0']);
+  chapterBeats(ch).forEach(function(b){h+=rowHtml(b)});
+  return h+'</div>';
+}
 function renderMap(){
-  var h='';
-  h+='<div class="chap"><div class="chap-h"><h3>Chapter Nine</h3><span>live</span></div>'+
-     '<div class="beat-btn locked" style="cursor:default"><span class="n">9</span><span class="t">The Ancient Bone Path</span><span class="w">~1,300</span></div>'+
-     '<div class="note" style="font-size:12.5px;color:var(--muted)">Seeds already planted: her wish to stay alone at the leshy\'s pond, and the warning that this is a war neither side must win.</div></div>';
-  ALLCH.forEach(function(ch){
-    var tot=chapterWords(ch),proj=chapterProjected(ch);
-    h+='<div class="chap c'+ch+'"><div class="chap-h"><h3>Chapter '+CHN[ch]+'</h3><span>'+fmt(proj)+' / '+fmt(CHT[ch])+'</span></div>';
-    chapterBeats(ch).forEach(function(b){
-      var s=bs(b.id),w=wc(s.text),pc=Math.min(100,Math.round((s.done?1:w/s.target)*100));
-      h+='<button class="beat-btn'+(s.done?' done':'')+'" data-id="'+b.id+'" aria-current="'+(!viewLater&&b.id===cur)+'">'+
-        '<span class="n">'+b.id.replace('-','.')+'</span><span class="t">'+b.title+'</span><span class="w">'+(w||'–')+'/'+s.target+'</span>'+
-        '<span class="mini"><i style="width:'+pc+'%"></i></span></button>';
-    });
+  var h='',m=state.meta;
+  PARTS.forEach(function(p){
+    var open=!!partOpen[p.id],pn=p.n?((m.partNames||{})[p.id]||''):'';
+    var words=p.chs.reduce(function(a,c){return a+chapterWords(c)},0);
+    h+='<div class="part'+(open?' open':'')+'"><button class="part-h" data-part="'+p.id+'" aria-expanded="'+open+'"><span class="car">'+(open?'▾':'▸')+'</span><span class="pn">'+p.label+'</span><span class="pt">'+esc(pn)+'</span><span class="pw">'+(words?fmt(words)+' w':'')+'</span></button>';
+    if(open){
+      h+='<div class="part-b">';
+      if(p.n)h+=rowHtml(BY[(100+p.n)+'-1']);
+      p.chs.forEach(function(c){
+        if(DETAIL.indexOf(c)>-1)h+=detailHtml(c);
+        else{var u=BY[c+'-1'];if(u)h+=rowHtml(u)}
+      });
+      (p.extra||[]).forEach(function(id){h+=rowHtml(BY[id])});
+      if(p.id==='bk')h+='<button class="beat-btn plain" data-later="1" aria-current="'+viewLater+'"><span class="n">→</span><span class="t">Later in the Novel</span><span class="w"></span></button>';
+      if(p.id==='p2')h+='<div class="beam"><svg viewBox="0 0 240 92" role="img" aria-label="Balance beam comparing Ten and Eleven">'+beamSvg()+'</svg><div class="legend" id="beam-l"></div></div>';
+      h+='</div>';
+    }
     h+='</div>';
   });
-  h+='<div class="chap"><div class="chap-h"><h3>After Chapter Fourteen</h3></div><button class="beat-btn" data-later="1" aria-current="'+viewLater+'"><span class="n">→</span><span class="t">Later in the Novel</span><span class="w"></span></button></div>';
-  h+='<div class="beam"><svg viewBox="0 0 240 92" role="img" aria-label="Balance beam comparing Ten and Eleven">'+beamSvg()+'</svg><div class="legend" id="beam-l"></div></div>';
   $('map').innerHTML=h;
-  var a=chapterProjected(10),b=chapterProjected(11),d=b-a;
-  $('beam-l').textContent=Math.abs(d)<=100?'Ten and Eleven are level.':(d>0?'Eleven is heavier by '+fmt(d)+' words.':'Ten is heavier by '+fmt(-d)+' words.');
+  var bl=$('beam-l');
+  if(bl){var a=chapterProjected(10),b=chapterProjected(11),d=b-a;bl.textContent=Math.abs(d)<=100?'Ten and Eleven are level.':(d>0?'Eleven is heavier by '+fmt(d)+' words.':'Ten is heavier by '+fmt(-d)+' words.')}
 }
 function beamSvg(){
   var a=chapterProjected(10),b=chapterProjected(11),d=b-a;
@@ -692,42 +850,76 @@ function beamSvg(){
 /* ---------- stage ---------- */
 var viewLater=false;
 function renderLater(){
-  $('stage').innerHTML='<div class="card later-box"><div class="crumb">After Chapter Fourteen</div><h2>Later in the Novel</h2><p style="margin:0;color:var(--muted);font-size:13px">Seeds, plants and open questions, so nothing is lost. Edit freely; it saves as you type.</p><textarea id="later" spellcheck="true" placeholder="Nothing here yet. Load your private notes file with Restore, or write your own."></textarea></div>';
+  $('stage').innerHTML='<div class="card later-box"><div class="crumb">Across the book</div><h2>Later in the Novel</h2><p style="margin:0;color:var(--muted);font-size:13px">Seeds, plants and open questions, so nothing is lost. Edit freely; it saves as you type.</p><textarea id="later" spellcheck="true" placeholder="Nothing here yet. Load your private notes file with Restore, or write your own."></textarea></div>';
   var t=$('later');t.value=(state.meta.notes||{}).later||'';
   t.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes.later=t.value;scheduleSave('meta')});
 }
+var findQ='',openNotes=false;
+function renderNotesOnly(b){
+  var p=partOfUnit(b.id),isPart=b.kind==='PART',pn=isPart?((state.meta.partNames||{})[p.id]||''):'';
+  var h='<div class="card later-box"><div class="crumb">'+(isPart?esc(p.label):'Across the book')+'</div>';
+  h+=isPart?'<h2>'+esc(p.label)+(pn?' · '+esc(pn):'')+'</h2><label class="fld">Part name<input id="pname" type="text" maxlength="60" placeholder="e.g. Ventura" value="'+esc(pn)+'"></label>':'<h2>'+esc(b.title)+'</h2>';
+  h+='<p style="margin:0;color:var(--muted);font-size:13px">'+(isPart?'Everything we decided about this Part as a whole. Edit freely; it saves as you type.':'Notes only. Edit freely; it saves as you type.')+'</p><textarea id="bn" spellcheck="true" placeholder="Nothing here yet. Load your private notes file with Restore, or write your own."></textarea></div>';
+  $('stage').innerHTML=h;
+  var bn=$('bn');bn.value=(state.meta.notes||{})[b.id]||'';
+  bn.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes[b.id]=bn.value;scheduleSave('meta')});
+  var pe=$('pname');if(pe)pe.addEventListener('input',function(){state.meta.partNames=state.meta.partNames||{};state.meta.partNames[p.id]=pe.value;scheduleSave('meta');renderMap()});
+}
 function renderStage(){
   if(viewLater){renderLater();return}
-  var b=BY[cur],s=bs(cur),w=wc(s.text);
-  var h='<div class="card"><div class="crumb">Chapter '+CHN[b.ch]+' · beat '+b.n+' of '+chapterBeats(b.ch).length+'</div>'+
-    '<h2>'+b.title+'</h2><div class="chips"><span class="chip '+b.kind+'">'+b.kind+'</span>'+
-    '<span class="chip soft">POV: '+b.pov+'</span>'+
-    (b.existing?'<span class="chip soft">~'+fmt(b.existing)+' words exist</span>':'<span class="chip soft">Nothing written yet</span>')+'</div></div>'+
-    '<div class="notes"><div class="note"><h3>What this beat means</h3><p>'+b.means+'</p></div>'+
+  var b=BY[cur];
+  if(b.notesOnly){renderNotesOnly(b);return}
+  var s=bs(cur),pl=!!b.plain,p=partOfUnit(cur),pnm=p.n?((state.meta.partNames||{})[p.id]||''):'',st=pl?unitStatus(b):'';
+  var crumb,ttl,chips;
+  if(pl){
+    var bits=[];
+    if(b.ch===0)bits.push('Prelude');
+    else if(b.ch>=58)bits.push('Back matter');
+    else{bits.push(p.label);if(pnm)bits.push(pnm);bits.push(b.ch===57?'Coda':chLabel(b.ch))}
+    if(b.kind==='REF')bits.push('old draft');
+    crumb=bits.map(esc).join(' · ');
+    ttl='<input id="titl" class="titl" type="text" maxlength="120" aria-label="Chapter title" placeholder="Untitled (click here to name this chapter)" value="'+esc(chTitle(b.ch))+'">';
+    chips=b.kind==='REF'?'<span class="chip REF">OLD DRAFT</span><span class="chip soft">kept beside the beats; cut and paste from it</span>':
+      '<button class="chip chipbtn '+st+'" id="st-chip" title="Click to change the status">'+st+'</button>'+(st==='PUBLISHED'?'<span class="chip soft">typos only</span>':'');
+  }else{
+    var ct=chTitle(b.ch);
+    crumb=chLabel(b.ch)+(ct?' · '+esc(ct):'')+' · beat '+b.n+' of '+chapterBeats(b.ch).length;
+    ttl='<h2>'+b.title+'</h2>';
+    chips='<span class="chip '+b.kind+'">'+b.kind+'</span><span class="chip soft">POV: '+b.pov+'</span>'+(b.existing?'<span class="chip soft">~'+fmt(b.existing)+' words exist</span>':'<span class="chip soft">Nothing written yet</span>');
+  }
+  var hasNote=((state.meta.notes||{})[cur]||'').trim();
+  var h='<div class="card"><div class="crumb">'+crumb+'</div>'+ttl+'<div class="chips">'+chips+'</div></div>';
+  if(!pl)h+='<div class="notes"><div class="note"><h3>What this beat means</h3><p>'+b.means+'</p></div>'+
     '<div class="note"><h3>By the end, something has changed</h3><p>'+b.shift+'</p></div>'+
-    '<div class="note src"><h3>Where your words are</h3><p>'+b.anchor+'</p></div></div>'+
-    '<details class="more"><summary>Everything we decided</summary><textarea id="bn" rows="10" placeholder="Nothing filed here yet. Load your private notes file with Restore, or write your own."></textarea></details>'+
-    '<details class="qs" open><summary>Questions to ask yourself</summary><ul>'+b.qs.map(function(q){return '<li>'+q+'</li>'}).join('')+'</ul></details>'+
-    '<div class="checks"><h3>Done when</h3>'+b.checks.map(function(c,i){
-      var on=!!s.checks[i];return '<label class="chk'+(on?' on':'')+'"><input type="checkbox" data-ck="'+i+'"'+(on?' checked':'')+'><span>'+c+'</span></label>'}).join('')+'</div>'+
-    '<div class="writer" id="writer"><div class="w-head"><div class="countbox">'+
+    '<div class="note src"><h3>Where your words are</h3><p>'+b.anchor+'</p></div></div>';
+  h+='<details class="more"><summary>Everything we decided'+(hasNote?' ✎':'')+'</summary><textarea id="bn" rows="'+(pl?14:10)+'" placeholder="Nothing filed here yet. Load your private notes file with Restore, or write your own."></textarea></details>';
+  if(b.qs.length)h+='<details class="qs" open><summary>Questions to ask yourself</summary><ul>'+b.qs.map(function(q){return '<li>'+q+'</li>'}).join('')+'</ul></details>';
+  if(b.checks.length)h+='<div class="checks"><h3>Done when</h3>'+b.checks.map(function(c,i){
+      var on=!!s.checks[i];return '<label class="chk'+(on?' on':'')+'"><input type="checkbox" data-ck="'+i+'"'+(on?' checked':'')+'><span>'+c+'</span></label>'}).join('')+'</div>';
+  if(st==='PUBLISHED')h+='<div class="lockbar">Published on the site: typos only. If that is wrong, click the status chip above.</div>';
+  h+='<div class="writer" id="writer"><div class="w-head"><div class="countbox">'+
       '<svg class="ring" id="ring" viewBox="0 0 54 54"><circle class="bg" cx="27" cy="27" r="22"/><circle class="fg" id="ring-fg" cx="27" cy="27" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2"/></svg>'+
       '<div class="cnt"><big id="cnt">0</big><small id="cnt-s"></small></div></div>'+
-    '<div class="w-tools"><label class="tgt">Target <input id="tgt" type="number" min="50" max="1500" step="10" value="'+s.target+'"></label>'+
+    '<div class="w-tools"><label class="tgt">Target <input id="tgt" type="number" min="50" max="8000" step="10" value="'+s.target+'"></label>'+
       '<button class="btn" id="b-focus">Focus mode</button>'+
       '<button class="btn" id="b-sprint">10-minute sprint</button>'+
       '<button class="btn go" id="b-done">'+(s.done?'Done ✓ (undo)':'Mark done')+'</button></div></div>'+
-    '<textarea id="ta" spellcheck="true" placeholder="Write here, or paste the version you\'re trimming. Rough is fine."></textarea></div>'+locksHtml(s);
+    '<textarea id="ta" spellcheck="true" placeholder="'+(pl?'The chapter text lives here. Edit it, trim it, or paste a new version.':'Write here, or paste the version you\'re trimming. Rough is fine.')+'"></textarea></div>'+locksHtml(s);
   $('stage').innerHTML=h;
-  var bnEl=$('bn');if(bnEl){bnEl.value=(state.meta.notes||{})[cur]||'';if(bnEl.value)bnEl.closest('details').open=false;bnEl.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes[cur]=bnEl.value;scheduleSave('meta')})}
+  var bnEl=$('bn');
+  bnEl.value=(state.meta.notes||{})[cur]||'';
+  if(openNotes){bnEl.closest('details').open=true;openNotes=false}
+  bnEl.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes[cur]=bnEl.value;scheduleSave('meta')});
   var ta=$('ta');ta.value=s.text;
   ta.addEventListener('input',onInput);
-  $('tgt').addEventListener('change',function(e){var v=Math.max(50,Math.min(1500,parseInt(e.target.value,10)||b.target));bs(cur).target=v;e.target.value=v;scheduleSave('beat-'+cur);updateAll()});
+  $('tgt').addEventListener('change',function(e){var v=Math.max(50,Math.min(8000,parseInt(e.target.value,10)||b.target));bs(cur).target=v;e.target.value=v;scheduleSave('beat-'+cur);updateAll()});
   $('b-focus').addEventListener('click',toggleFocus);
   $('b-sprint').addEventListener('click',function(){startSprint(10)});
   $('b-done').addEventListener('click',toggleDone);
+  var ti=$('titl');if(ti)ti.addEventListener('input',function(){var m=state.meta;m.titles=m.titles||{};m.titles[String(b.ch)]=ti.value;scheduleSave('meta');renderMap()});
+  var sc=$('st-chip');if(sc)sc.addEventListener('click',function(){var m=state.meta,i=STATUSES.indexOf(unitStatus(b));m.status=m.status||{};m.status[b.id]=STATUSES[(i+1)%STATUSES.length];scheduleSave('meta');renderStage();renderMap();toast('Status: '+m.status[b.id]+'.')});
   $('stage').querySelectorAll('input[data-ck]').forEach(function(i){i.addEventListener('change',function(e){
-    var st=bs(cur),k=parseInt(e.target.getAttribute('data-ck'),10),arr=st.checks.slice();arr[k]=e.target.checked;st.checks=arr;
+    var stt=bs(cur),k=parseInt(e.target.getAttribute('data-ck'),10),arr=stt.checks.slice();arr[k]=e.target.checked;stt.checks=arr;
     e.target.closest('.chk').classList.toggle('on',e.target.checked);
     if(e.target.checked) burst(e.target.getBoundingClientRect().left+8,e.target.getBoundingClientRect().top+8,12);
     scheduleSave('beat-'+cur);
@@ -813,7 +1005,7 @@ function endSprint(cancel){
 }
 
 /* ---------- tools ---------- */
-var TABS=[['sprint','Sprint'],['log','Log'],['unstick','Unstick'],['threads','Threads'],['pairs','Pairs'],['trends','Trends'],['voices','Voices'],['export','Export']];
+var TABS=[['sprint','Sprint'],['find','Find'],['log','Log'],['unstick','Unstick'],['threads','Threads'],['pairs','Pairs'],['trends','Trends'],['voices','Voices'],['export','Export']];
 function renderTools(){
   renderLetGo();
   var tab=state.meta.tab||'sprint';
@@ -842,7 +1034,7 @@ function paneHtml(tab){
       '<div class="row"><button class="btn go" id="roll">Roll a move</button></div>';
   }
   if(tab==='threads'){
-    return '<h3>Threads to land</h3><p>Tick each when it has landed on the page. Chips jump to the beats that plant or pay it off.</p>'+
+    return '<h3>Threads to land (Ten to Fourteen)</h3><p>Tick each when it has landed on the page. Chips jump to the beats that plant or pay it off.</p>'+
       THREADS.map(function(t){
         var on=!!m.threads[t.id];
         var hops=BEATS.filter(function(b){return b.threads.some(function(x){return x[0]===t.id})}).map(function(b){
@@ -863,10 +1055,15 @@ function paneHtml(tab){
     return '<h3>Sentence music</h3><p>Distinct enough that the reader can tell the Dogs apart before anyone says so.</p>'+
       VOICES.map(function(v){return '<div class="voice '+v.cl+'"><b>'+v.n+'</b><span>'+v.d+'</span></div>'}).join('');
   }
+  if(tab==='find'){
+    return '<h3>Find</h3><p>Searches every chapter and every note, all at once.</p><label class="fld">Search<input id="fd-q" type="search" placeholder="e.g. Owl, Sister Ritual, bell" value="'+esc(findQ)+'" autocomplete="off"></label><div class="pane" id="fd-res">'+findHtml(findQ)+'</div>';
+  }
   if(tab==='export'){
-    return '<h3>Stitch and export</h3><p>Joins your written beats in order. Nothing here changes your site.</p>'+
+    return '<h3>Stitch and export</h3><p>Joins your written text in order. Chapters Ten to Fourteen use your new beats, or fall back to the old draft until a beat has words. Nothing here changes your site.</p>'+
       '<label class="opt"><input type="checkbox" id="ex-br" checked> Scene breaks as three asterisks</label>'+
-      ''+ALLCH.map(function(c){return '<div class="row"><button class="btn" data-ex="'+c+'">Save '+CHN[c]+'</button><button class="btn" data-ex="copy'+c+'">Copy '+CHN[c]+'</button></div>'}).join('')+''+
+      '<label class="fld">Chapter<select id="ex-sel">'+EXCH.map(function(c){var ct=chTitle(c);return '<option value="'+c+'">'+esc(chLabel(c)+(ct?' · '+ct:''))+'</option>'}).join('')+'</select></label>'+
+      '<div class="row"><button class="btn" id="ex-save">Save chapter</button><button class="btn" id="ex-copy">Copy chapter</button></div>'+
+      '<div class="row"><button class="btn" id="ex-allsave">Save whole book</button><button class="btn" id="ex-allcopy">Copy whole book</button></div>'+
       '<table class="w" id="ex-tab"></table><textarea class="prev" id="ex-prev" readonly aria-label="Stitched preview"></textarea>';
   }
   return '';
@@ -892,39 +1089,90 @@ function bindPane(tab){
       if(v===1)burstAt(b,24);if(v===2)toast('Said aloud is the risky one. Is there an image instead?');
       scheduleSave('meta');renderTools()})});
   }
+  if(tab==='find'){
+    var fq=$('fd-q');
+    fq.addEventListener('input',function(){findQ=fq.value;$('fd-res').innerHTML=findHtml(findQ)});
+    $('fd-res').addEventListener('click',function(e){
+      var h=e.target.closest('.hit');if(!h)return;
+      if(h.hasAttribute('data-flater')){viewLater=true;partOpen.bk=true;renderStage();renderMap();return}
+      if(h.hasAttribute('data-fn'))openNotes=true;
+      go(h.getAttribute('data-fid'));
+    });
+  }
   if(tab==='export'){
-    p.querySelectorAll('[data-ex]').forEach(function(b){b.addEventListener('click',function(){exportCh(b.getAttribute('data-ex'))})});
+    $('ex-save').addEventListener('click',function(){exportCh(false,false)});
+    $('ex-copy').addEventListener('click',function(){exportCh(true,false)});
+    $('ex-allsave').addEventListener('click',function(){exportCh(false,true)});
+    $('ex-allcopy').addEventListener('click',function(){exportCh(true,true)});
     $('ex-br').addEventListener('change',refreshExportStats);
     refreshExportStats();
   }
 }
-function stitched(ch){
+var EXCH=[];(function(){for(var c=0;c<=60;c++)EXCH.push(c)})();
+function slug(t){return String(t).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)}
+function fileFor(ch){return CHF[ch]||('oldie-'+(ch===0?'prelude':ch===57?'coda':ch>57?'appendix-'+ch:'chapter-'+String(ch).padStart(2,'0'))+(chTitle(ch)?'-'+slug(chTitle(ch)):'')+'.md')}
+function chapterText(ch){
   var br=$('ex-br')?$('ex-br').checked:true;
-  var parts=chapterBeats(ch).map(function(b){return bs(b.id).text.trim()}).filter(Boolean);
-  return parts.join(br?'\n\n***\n\n':'\n\n');
+  var parts=chapterBeats(ch).map(function(b){var s=pk(b.id);return s?s.text.trim():''}).filter(Boolean);
+  if(parts.length)return parts.join(br?'\n\n***\n\n':'\n\n');
+  if(DETAIL.indexOf(ch)>-1){var r=pk(ch+'-0');return r?r.text.trim():''}
+  return '';
+}
+function bookText(){
+  var out=[];
+  PARTS.forEach(function(p){
+    var chunks=[];
+    p.chs.forEach(function(c){var t=chapterText(c);if(t){var ct=chTitle(c);chunks.push('## '+chLabel(c)+(ct?': '+ct:'')+'\n\n'+t)}});
+    if(chunks.length){var pn=p.n?((state.meta.partNames||{})[p.id]||''):'';out.push('# '+p.label+(pn?': '+pn:'')+'\n\n'+chunks.join('\n\n'))}
+  });
+  return out.join('\n\n');
 }
 function refreshExportStats(){
   var tb=$('ex-tab');if(!tb)return;
-  tb.innerHTML=ALLCH.map(function(ch){
-    return '<tr><td><b>Chapter '+CHN[ch]+'</b></td><td>'+fmt(chapterWords(ch))+' words</td></tr>'+
-      chapterBeats(ch).map(function(b){return '<tr><td>'+b.id.replace('-','.')+' '+b.title+'</td><td>'+beatWords(b)+'</td></tr>'}).join('')}).join('');
-  var pv=$('ex-prev');if(pv)pv.value=ALLCH.map(function(c){return CHN[c]+': '+fmt(chapterWords(c))+' words'}).join('\n')+'\n\nPress Copy or Save for the text itself.';
+  var h='',tot=0;
+  PARTS.forEach(function(p){
+    if(!p.chs.length)return;
+    var rows='',pw=0;
+    p.chs.forEach(function(c){
+      var w=chapterWords(c),old=DETAIL.indexOf(c)>-1?wcb(c+'-0'):0;pw+=(w||old);
+      if(w||old){var ct=chTitle(c);rows+='<tr><td>'+esc(chLabel(c)+(ct?' · '+ct:''))+'</td><td>'+fmt(w)+(old?' (old '+fmt(old)+')':'')+'</td></tr>'}
+      if(DETAIL.indexOf(c)>-1)chapterBeats(c).forEach(function(b){rows+='<tr class="sub"><td>'+b.id.replace('-','.')+' '+b.title+'</td><td>'+beatWords(b)+'</td></tr>'});
+    });
+    tot+=pw;
+    h+='<tr class="ph"><td><b>'+esc(p.label)+'</b></td><td><b>'+fmt(pw)+'</b></td></tr>'+rows;
+  });
+  tb.innerHTML=h+'<tr class="ph"><td><b>Whole book</b></td><td><b>'+fmt(tot)+'</b></td></tr>';
+  var pv=$('ex-prev');if(pv)pv.value='Whole book: '+fmt(tot)+' words\n\nPress Copy or Save for the text itself.';
 }
-async function exportCh(k){
-  var copy=k.indexOf('copy')===0,ch=parseInt(k.replace('copy',''),10),text=stitched(ch);
-  if(!text){toast('Nothing written in that chapter yet.');return}
+async function exportCh(copy,all){
+  var ch=parseInt(($('ex-sel')||{}).value,10)||0,text=all?bookText():chapterText(ch),name=all?'oldie-whole-book.md':fileFor(ch);
+  if(!text){toast('Nothing written there yet.');return}
   if(copy){
-    try{await navigator.clipboard.writeText(text);toast('Copied Chapter '+CHN[ch]+'.')}
+    try{await navigator.clipboard.writeText(text);toast(all?'Copied the whole book.':'Copied '+chLabel(ch)+'.')}
     catch(e){var pv=$('ex-prev');pv.value=text;pv.select();toast('Select all and copy from the box.')}
     return;
   }
-  try{
-    saveFile(CHF[ch],text);
-    toast('Saved.');
-  }catch(e){
-    if(e&&e.code==='declined')return;
-    var pv2=$('ex-prev');pv2.value=text;pv2.select();toast('Saving isn\'t available here. The text is in the box to copy.');
+  try{saveFile(name,text);toast('Saved.')}
+  catch(e){var pv2=$('ex-prev');pv2.value=text;pv2.select();toast('Saving isn\'t available here. The text is in the box to copy.')}
+}
+function findHtml(q){
+  q=(q||'').trim();
+  if(q.length<2)return '<p>Type at least two letters.</p>';
+  var lq=q.toLowerCase(),res=[],more=0;
+  function snip(t,i){var a=Math.max(0,i-40),e=Math.min(t.length,i+q.length+60);return (a>0?'…':'')+esc(t.slice(a,i))+'<mark>'+esc(t.slice(i,i+q.length))+'</mark>'+esc(t.slice(i+q.length,e))+(e<t.length?'…':'')}
+  function scan(label,where,t,attrs){
+    if(!t)return;var tl=t.toLowerCase(),i=tl.indexOf(lq);if(i<0)return;
+    var n=0,j=i;while(j>-1&&n<999){n++;j=tl.indexOf(lq,j+lq.length)}
+    if(res.length>=60){more++;return}
+    res.push('<button class="hit" '+attrs+'><b>'+esc(label)+' <small>'+where+' · '+n+'</small></b><span>'+snip(t,i)+'</span></button>');
   }
+  BEATS.forEach(function(b){
+    var s=pk(b.id),label=uLabel(b);
+    if(s&&s.text)scan(label,'text',s.text,'data-fid="'+b.id+'"');
+    var n=(state.meta.notes||{})[b.id];if(n)scan(label,'notes',n,'data-fid="'+b.id+'" data-fn="1"');
+  });
+  scan('Later in the Novel','notes',(state.meta.notes||{}).later||'','data-flater="1"');
+  return res.length?(res.join('')+(more?'<p>'+more+' more places match. Narrow the search.</p>':'')):'<p>Nothing found.</p>';
 }
 var rolling=false;
 function roll(){
@@ -1020,7 +1268,7 @@ function renderLetGo(){
 }
 function lockHtml(){
   var it=lockQ.items[lockQ.k],b=BY[it.id];
-  var h='<h3>Lock it in · '+b.id.replace('-','.')+' '+esc(b.title)+'</h3>';
+  var h='<h3>Lock it in · '+esc(uLabel(b))+'</h3>';
   if(it.loading)return h+'<p>Reading what you wrote…</p><div class="row"><button class="btn" id="lk-done">Skip the questions</button></div>';
   if(!it.qs){
     var off=/not_granted|sampling_disabled|not_declared|capability/.test(lockQ.err||'');
@@ -1062,8 +1310,8 @@ async function fetchQuestions(k){
   it.loading=true;lockQ.err='';renderTools();
   var text=s.text.length>14000?s.text.slice(-14000):s.text;
   var prev=(s.locks||[]).map(function(x){return x.q}).concat(it.asked||[]).slice(-12);
-  var prompt=RULES+'\n\nBEAT PLAN (the writer\'s own notes)\nTitle: '+b.title+'\nPurpose: '+b.means+'\nWhat should have changed by the end: '+b.shift+'\nPOV: '+b.pov+
-    '\n\nCONTEXT: Oldie is a serialized fantasy novel. This section belongs to the end of a war between a creeping Blight and a runaway Wildwood.'+
+  var prompt=RULES+'\n\nWHAT THIS IS (the writer\'s own notes)\nTitle: '+unitLabel(b)+(b.means?'\nPurpose: '+b.means:'')+(b.shift?'\nWhat should have changed by the end: '+b.shift:'')+(b.pov?'\nPOV: '+b.pov:'')+
+    '\n\nCONTEXT: Oldie is a serialized fantasy novel.'+((b.ch===10||b.ch===11)?' This section belongs to the end of a war between a creeping Blight and a runaway Wildwood.':'')+
     '\n\nQUESTIONS ALREADY ASKED:\n'+(prev.length?prev.join('\n'):'none')+
     '\n\nTHE WRITER\'S TEXT:\n<<<\n'+text+'\n>>>\n\nReply with only a JSON array of exactly 3 question strings.';
   try{
@@ -1118,12 +1366,13 @@ function trendsHtml(){
   var days=[],mx=1;
   for(var i=13;i>=0;i--){var d=new Date(Date.now()-i*864e5),k=d.toLocaleDateString('en-CA'),w=(m.days&&m.days[k])||0;days.push([k,w,d]);if(w>mx)mx=w}
   h+='<p>Words typed, last 14 days.</p><div class="bars14">'+days.map(function(x){return '<div class="b14" title="'+x[0]+': '+x[1]+' words"><i style="height:'+Math.max(2,Math.round(x[1]/mx*62))+'px"></i><span>'+x[2].getDate()+'</span></div>'}).join('')+'</div>';
-  h+='<p>Chapter health</p>';
-  ALLCH.forEach(function(ch){
+  h+='<p>Words by Part</p><table class="w">'+PARTS.filter(function(p){return p.chs.length}).map(function(p){var w=p.chs.reduce(function(a,c){return a+chapterWords(c)},0);return '<tr><td>'+esc(p.label)+'</td><td>'+fmt(w)+' w</td></tr>'}).join('')+'</table>';
+  h+='<p>Chapter health (Ten to Fourteen, the beat plans)</p>';
+  DETAIL.forEach(function(ch){
     var bl=chapterBeats(ch),tg=0,dn=0,lk=0;
     bl.forEach(function(b){var st=bs(b.id);tg+=st.target||b.target;if(st.done)dn++;lk+=(st.locks||[]).length});
     var w=chapterWords(ch),pc=Math.min(100,Math.round(w/Math.max(1,tg)*100));
-    h+='<div class="rd"><b>Chapter '+CHN[ch]+' · '+fmt(w)+' / '+fmt(tg)+' words</b><div class="bar"><i style="width:'+pc+'%;background:var(--wild)"></i></div><span>'+dn+' of '+bl.length+' beats marked done · '+lk+' locked answers</span></div>';
+    h+='<div class="rd"><b>'+chLabel(ch)+' · '+fmt(w)+' / '+fmt(tg)+' words</b><div class="bar"><i style="width:'+pc+'%;background:var(--wild)"></i></div><span>'+dn+' of '+bl.length+' beats marked done · '+lk+' locked answers</span></div>';
   });
   if(L.length<3){h+='<p>Rhythm trends appear after about three logged sessions. You have '+L.length+'.</p>'}
   else{
@@ -1146,7 +1395,7 @@ function bindTrends(){
 }
 async function runInsight(){
   var b=$('tr-read'),msg=$('tr-msg');if(b)b.disabled=true;if(msg)msg.textContent='Reading…';
-  var qa=[];BEATS.forEach(function(x){(bs(x.id).locks||[]).forEach(function(l){qa.push(x.id+' '+x.title+' ('+l.d+')\nQ: '+l.q+'\nA: '+l.a)})});
+  var qa=[];BEATS.forEach(function(x){(bs(x.id).locks||[]).forEach(function(l){qa.push(x.id+' '+unitLabel(x)+' ('+l.d+')\nQ: '+l.q+'\nA: '+l.a)})});
   qa=qa.slice(-40);
   var lg=(state.meta.log||[]).slice(-20).map(function(e){return new Date(e.start).toLocaleString()+' · '+e.min+' min · '+e.words+' words · energy '+(EN[(e.energy||3)-1])+(e.note?' · '+e.note:'')});
   var prompt=TR_RULES+'\n\nLOCKED ANSWERS:\n'+(qa.join('\n\n')||'none')+'\n\nSESSION LOG:\n'+(lg.join('\n')||'none')+'\n\nReply with only the JSON array of 3 strings.';
@@ -1165,18 +1414,18 @@ async function runInsight(){
 /* ---------- nav ---------- */
 function go(id){
   if(!BY[id])return;
-  viewLater=false;cur=id;state.meta.last=id;scheduleSave('meta');
+  viewLater=false;cur=id;state.meta.last=id;partOpen[partOfUnit(id).id]=true;scheduleSave('meta');
   renderStage();renderMap();
   var st=$('stage');if(st&&window.innerWidth<900)st.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
 }
-$('map').addEventListener('click',function(e){var l=e.target.closest('.beat-btn[data-later]');if(l){viewLater=true;renderStage();renderMap();var st=$('stage');if(st&&window.innerWidth<900)st.scrollIntoView({block:'start'});return}var b=e.target.closest('.beat-btn[data-id]');if(b)go(b.getAttribute('data-id'))});
+$('map').addEventListener('click',function(e){var ph=e.target.closest('.part-h[data-part]');if(ph){var pid=ph.getAttribute('data-part');partOpen[pid]=!partOpen[pid];renderMap();return}var l=e.target.closest('.beat-btn[data-later]');if(l){viewLater=true;partOpen.bk=true;renderStage();renderMap();var st=$('stage');if(st&&window.innerWidth<900)st.scrollIntoView({block:'start'});return}var b=e.target.closest('.beat-btn[data-id]');if(b)go(b.getAttribute('data-id'))});
 $('p-today').addEventListener('click',function(){
   var g=[100,150,250,500],i=g.indexOf(state.meta.goal);state.meta.goal=g[(i+1)%g.length];scheduleSave('meta');renderHeader();toast('Daily goal: '+state.meta.goal+' words.')});
 $('p-theme').addEventListener('click',function(){
   var o=['','light','dark'],i=o.indexOf(state.meta.theme||''),n=o[(i+1)%3];state.meta.theme=n;applyTheme();scheduleSave('meta');renderHeader()});
 function applyTheme(){var t=state.meta.theme;if(t)document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme')}
 
-function renderAll(){applyTheme();renderHeader();renderMap();renderStage();renderTools();renderTimer();renderEndBtn()}
+function renderAll(){partOpen[viewLater?'bk':partOfUnit(cur).id]=true;applyTheme();renderHeader();renderMap();renderStage();renderTools();renderTimer();renderEndBtn()}
 
 loadLocal();loadSession();
 if(BY[state.meta.last])cur=state.meta.last;
