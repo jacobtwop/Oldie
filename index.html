@@ -264,6 +264,16 @@ button.chipbtn:hover{background:var(--panel2)}
 .hit{display:grid;gap:2px;text-align:left;width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
 .hit:hover{border-color:var(--wild)}
 .hit b{font-size:12.5px}.hit b small{font-weight:400;color:var(--muted);font-family:var(--f-mono)}
+.rp{margin:10px 0;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel2)}
+.rp summary{cursor:pointer;font-weight:600;font-size:13px}
+.rp p{font-size:12.5px;margin:6px 0}
+.rp-row{display:grid;gap:3px;border-top:1px solid var(--line);padding:7px 0;font-size:12.5px}
+.rp-row label{display:flex;gap:7px;align-items:flex-start}
+.rp-row small{color:var(--muted);font-family:var(--f-mono)}
+.rp-row .snip{color:var(--muted);line-height:1.4;padding-left:24px}
+.rp-row mark{background:none;color:var(--blight);text-decoration:line-through}
+.rp-row ins{text-decoration:none;font-weight:700;color:var(--wild)}
+.rp-pub{font-size:11px;color:var(--moon);border:1px solid var(--moon);border-radius:6px;padding:0 5px;margin-left:6px}
 .hit span{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
 .hit mark{background:color-mix(in srgb,var(--sun) 40%,transparent);color:var(--ink);border-radius:3px;padding:0 1px}
 table.w tr.ph td{padding-top:8px}
@@ -857,6 +867,7 @@ function renderLater(){
   t.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes.later=t.value;scheduleSave('meta')});
 }
 var findQ='',openNotes=false;
+var rpW='',rpOpen=false,rpPlan=null,rpOpt={c:true,w:true,t:true,n:false},RPK=LS+'.last-replace';
 function renderNotesOnly(b){
   var p=partOfUnit(b.id),isPart=b.kind==='PART',pn=isPart?((state.meta.partNames||{})[p.id]||''):'';
   var h='<div class="card later-box"><div class="crumb">'+(isPart?esc(p.label):'Across the book')+'</div>';
@@ -1058,7 +1069,7 @@ function paneHtml(tab){
       VOICES.map(function(v){return '<div class="voice '+v.cl+'"><b>'+v.n+'</b><span>'+v.d+'</span></div>'}).join('');
   }
   if(tab==='find'){
-    return '<h3>Find</h3><p>Searches every chapter and every note, all at once.</p><label class="fld">Search<input id="fd-q" type="search" placeholder="e.g. Owl, Sister Ritual, bell" value="'+esc(findQ)+'" autocomplete="off"></label><div class="pane" id="fd-res">'+findHtml(findQ)+'</div>';
+    return '<h3>Find</h3><p>Searches every chapter and every note, all at once.</p><label class="fld">Search<input id="fd-q" type="search" placeholder="e.g. Owl, Sister Ritual, bell" value="'+esc(findQ)+'" autocomplete="off"></label>'+rpHtml()+'<div class="pane" id="fd-res">'+findHtml(findQ)+'</div>';
   }
   if(tab==='export'){
     return '<h3>Stitch and export</h3><p>Joins your written text in order. Chapters Ten to Fourteen use your new beats, or fall back to the old draft until a beat has words. Nothing here changes your site.</p>'+
@@ -1093,7 +1104,7 @@ function bindPane(tab){
   }
   if(tab==='find'){
     var fq=$('fd-q');
-    fq.addEventListener('input',function(){findQ=fq.value;$('fd-res').innerHTML=findHtml(findQ)});
+    fq.addEventListener('input',function(){findQ=fq.value;rpPlan=null;rpRender();$('fd-res').innerHTML=findHtml(findQ)});rpBind();
     $('fd-res').addEventListener('click',function(e){
       var h=e.target.closest('.hit');if(!h)return;
       if(h.hasAttribute('data-flater')){viewLater=true;partOpen.bk=true;renderStage();renderMap();return}
@@ -1175,6 +1186,129 @@ function findHtml(q){
   });
   scan('Later in the Novel','notes',(state.meta.notes||{}).later||'','data-flater="1"');
   return res.length?(res.join('')+(more?'<p>'+more+' more places match. Narrow the search.</p>':'')):'<p>Nothing found.</p>';
+}
+/* ---------- find and replace (Nov 16) ---------- */
+function rpEsc(q){return q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+function rpWordCh(ch){if(!ch)return false;try{return /[\p{L}\p{N}_]/u.test(ch)}catch(e){return /[A-Za-z0-9_À-ɏ]/.test(ch)}}
+function rpFind(t,q,cs,ww){
+  var out=[],re=new RegExp(rpEsc(q),cs?'g':'gi'),m;
+  while((m=re.exec(t))){
+    var i=m.index,L=m[0].length;
+    if(!L){re.lastIndex++;continue}
+    if(!ww||(!rpWordCh(t.charAt(i-1))&&!rpWordCh(t.charAt(i+L))))out.push({i:i,len:L});
+  }
+  return out;
+}
+function rpApply(t,q,w,cs,ww){
+  var ms=rpFind(t,q,cs,ww),o='',p=0;
+  ms.forEach(function(m){o+=t.slice(p,m.i)+w;p=m.i+m.len});
+  return {n:ms.length,out:o+t.slice(p)};
+}
+function rpHasUndo(){try{return !!localStorage.getItem(RPK)}catch(e){return false}}
+function rpHtml(){
+  return '<details class="rp" id="rp-box"'+(rpOpen?' open':'')+'><summary>Replace…</summary>'+
+    '<p>Replaces the word or phrase in the Search box above. Preview first; nothing changes until you press Replace. It changes text in this workbench only, not your site.</p>'+
+    '<label class="fld">Replace with<input id="rp-w" type="text" value="'+esc(rpW)+'" autocomplete="off" placeholder="leave empty to delete the matches"></label>'+
+    '<label class="opt"><input type="checkbox" id="rp-c"'+(rpOpt.c?' checked':'')+'> Match case</label>'+
+    '<label class="opt"><input type="checkbox" id="rp-ww"'+(rpOpt.w?' checked':'')+'> Whole word only</label>'+
+    '<label class="opt"><input type="checkbox" id="rp-t"'+(rpOpt.t?' checked':'')+'> In chapter text</label>'+
+    '<label class="opt"><input type="checkbox" id="rp-n"'+(rpOpt.n?' checked':'')+'> In notes</label>'+
+    '<div class="row"><button class="btn" id="rp-prev">Preview</button><button class="btn" id="rp-undo"'+(rpHasUndo()?'':' disabled')+'>Undo last replace</button></div>'+
+    '<div id="rp-out"></div></details>';
+}
+function rpPlanBuild(q,w,o){
+  var items=[],tot=0,apos=0;
+  function add(kind,key,label,t,pub){
+    if(!t)return;
+    var ms=rpFind(t,q,o.c,o.w);if(!ms.length)return;
+    var sn=ms.slice(0,3).map(function(m){
+      var a=Math.max(0,m.i-40),e=Math.min(t.length,m.i+m.len+50);
+      return (a>0?'…':'')+esc(t.slice(a,m.i))+'<mark>'+esc(t.slice(m.i,m.i+m.len))+'</mark><ins>'+esc(w)+'</ins>'+esc(t.slice(m.i+m.len,e))+(e<t.length?'…':'');
+    });
+    if(ms.length>3)sn.push('<small>and '+(ms.length-3)+' more here</small>');
+    ms.forEach(function(m){var c=t.charAt(m.i+m.len);if(c==="'"||c==='’')apos++});
+    items.push({id:kind+':'+key,kind:kind,key:key,label:label,n:ms.length,pub:pub,snips:sn});tot+=ms.length;
+  }
+  if(o.t)BEATS.forEach(function(b){var s=pk(b.id);if(s&&s.text)add('t',b.id,uLabel(b),s.text,unitStatus(b)==='PUBLISHED'||(b.ch>=0&&b.ch<=9&&!b.notesOnly))});
+  if(o.n){var N=state.meta.notes||{};Object.keys(N).forEach(function(k){var b=BY[k];if(!b&&k!=='later')return;add('n',k,(b?uLabel(b):'Later in the Novel')+' · notes',N[k],false)})}
+  return {q:q,w:w,o:{c:o.c,w:o.w,t:o.t,n:o.n},items:items,tot:tot,apos:apos,off:{}};
+}
+function rpRender(){
+  var out=$('rp-out');if(!out)return;
+  var p=rpPlan;
+  if(!p){out.innerHTML='';return}
+  if(!p.items.length){out.innerHTML='<p>No matches for “'+esc(p.q)+'”'+(p.o.c?' (Match case is on).':'.')+'</p>';return}
+  var sel=0,selN=0;p.items.forEach(function(x){if(!p.off[x.id]){sel++;selN+=x.n}});
+  var h='<p><b>'+p.tot+'</b> match'+(p.tot===1?'':'es')+' in <b>'+p.items.length+'</b> place'+(p.items.length===1?'':'s')+': “'+esc(p.q)+'” → '+(p.w===''?'(nothing, so they are deleted)':'“'+esc(p.w)+'”')+'.</p>';
+  if(p.apos)h+='<p>⚠ '+p.apos+' of them '+(p.apos===1?'sits':'sit')+' right before an apostrophe. Check '+(p.apos===1?'that one':'those')+' afterward.</p>';
+  h+='<p>Take a Backup first if you like. Untick any place you want to leave alone.</p>';
+  h+=p.items.map(function(x){
+    return '<div class="rp-row"><label><input type="checkbox" data-rid="'+x.id+'"'+(p.off[x.id]?'':' checked')+'><span><b>'+esc(x.label)+'</b> <small>'+x.n+'</small>'+(x.pub?'<span class="rp-pub">published</span>':'')+'</span></label><div class="snip">'+x.snips.join('<br>')+'</div></div>';
+  }).join('');
+  h+='<div class="row"><button class="btn" id="rp-go"'+(sel?'':' disabled')+'>Replace '+selN+' in '+sel+' place'+(sel===1?'':'s')+'</button></div>';
+  out.innerHTML=h;
+}
+function rpGo(){
+  var p=rpPlan;if(!p)return;
+  var sel=p.items.filter(function(x){return !p.off[x.id]});
+  if(!sel.length){toast('Nothing is ticked.');return}
+  var snap={t:Date.now(),q:p.q,w:p.w,beats:{},notes:{}},changed=[],n=0;
+  sel.forEach(function(x){
+    var cur=x.kind==='t'?(pk(x.key)||{}).text:(state.meta.notes||{})[x.key];
+    if(!cur)return;
+    var r=rpApply(cur,p.q,p.w,p.o.c,p.o.w);if(!r.n)return;
+    (x.kind==='t'?snap.beats:snap.notes)[x.key]={old:cur,nw:r.out};n+=r.n;changed.push({x:x,out:r.out});
+  });
+  if(!n){toast('Nothing to replace. The text may have changed since the preview.');return}
+  try{localStorage.setItem(RPK,JSON.stringify(snap))}catch(e){toast('This browser has no room to keep an undo copy, so nothing was changed. Take a Backup, then try again.',9000);return}
+  var anyN=false;
+  changed.forEach(function(c){
+    if(c.x.kind==='t'){bs(c.x.key).text=c.out;scheduleSave('beat-'+c.x.key)}
+    else{state.meta.notes[c.x.key]=c.out;anyN=true}
+  });
+  if(anyN)scheduleSave('meta');
+  saveLocal();rpPlan=null;rpOpen=true;
+  renderStage();renderMap();renderTools();renderHeader();
+  toast('Replaced '+n+' in '+changed.length+' place'+(changed.length===1?'':'s')+'. Undo is under Find, Replace.',7000);
+}
+function rpUndo(){
+  var s=null;try{s=JSON.parse(localStorage.getItem(RPK)||'null')}catch(e){}
+  if(!s){toast('Nothing to undo.');return}
+  var back=0,skip=0,anyN=false;
+  Object.keys(s.beats||{}).forEach(function(id){
+    var c=pk(id);
+    if(c&&c.text===s.beats[id].nw){c.text=s.beats[id].old;scheduleSave('beat-'+id);back++;delete s.beats[id]}else skip++;
+  });
+  Object.keys(s.notes||{}).forEach(function(k){
+    var N=state.meta.notes||{};
+    if(N[k]===s.notes[k].nw){N[k]=s.notes[k].old;anyN=true;back++;delete s.notes[k]}else skip++;
+  });
+  if(anyN)scheduleSave('meta');
+  try{if(skip)localStorage.setItem(RPK,JSON.stringify(s));else localStorage.removeItem(RPK)}catch(e){}
+  saveLocal();rpPlan=null;rpOpen=true;
+  renderStage();renderMap();renderTools();renderHeader();
+  toast('Undid '+back+' place'+(back===1?'':'s')+'.'+(skip?' Left '+skip+' alone because you have edited them since.':''),7000);
+}
+function rpBind(){
+  var bx=$('rp-box');if(!bx)return;
+  bx.addEventListener('toggle',function(){rpOpen=bx.open});
+  function stale(){rpPlan=null;rpRender()}
+  $('rp-w').addEventListener('input',function(){rpW=this.value;stale()});
+  [['rp-c','c'],['rp-ww','w'],['rp-t','t'],['rp-n','n']].forEach(function(a){$(a[0]).addEventListener('change',function(){rpOpt[a[1]]=this.checked;stale()})});
+  $('rp-prev').addEventListener('click',function(){
+    var q=(findQ||'').trim();
+    if(q.length<2){toast('Type the word to replace in the Search box first (two letters at least).');return}
+    if(!rpOpt.t&&!rpOpt.n){toast('Tick chapter text, notes, or both.');return}
+    rpPlan=rpPlanBuild(q,rpW,rpOpt);rpRender();
+  });
+  $('rp-undo').addEventListener('click',rpUndo);
+  $('rp-out').addEventListener('change',function(e){
+    var r=e.target.getAttribute&&e.target.getAttribute('data-rid');if(!r||!rpPlan)return;
+    if(e.target.checked)delete rpPlan.off[r];else rpPlan.off[r]=1;
+    rpRender();
+  });
+  $('rp-out').addEventListener('click',function(e){if(e.target.id==='rp-go')rpGo()});
+  rpRender();
 }
 var rolling=false;
 function roll(){
