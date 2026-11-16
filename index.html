@@ -430,7 +430,6 @@ function plainUnit(id,ch,n,kind,x){var b={id:id,ch:ch,n:n,title:'',kind:kind,exi
     else BEATS.push(plainUnit(c+'-1',c,1,'CHAPTER'));
   }
   BEATS.push(plainUnit('57-1',57,1,'CHAPTER'));
-  [58,59,60].forEach(function(c){BEATS.push(plainUnit(c+'-1',c,1,'CHAPTER',{defStatus:'REF'}))});
   for(var p=1;p<=8;p++)BEATS.push(plainUnit((100+p)+'-1',100+p,1,'PART',{title:'Part notes',notesOnly:true,part:p}));
   BEATS.push(plainUnit('99-1',99,1,'BOOK',{title:'Whole-book notes',notesOnly:true}));
   BEATS.push(plainUnit('99-2',99,2,'BOOK',{title:'Complete notes log, in order',notesOnly:true}));
@@ -446,8 +445,7 @@ var PARTS=[
  {id:'p5',label:'Part Five',n:5,chs:[29,30,31,32,33,34,35]},
  {id:'p6',label:'Part Six',n:6,chs:[36,37,38,39,40,41,42]},
  {id:'p7',label:'Part Seven',n:7,chs:[43,44,45,46,47,48,49]},
- {id:'p8',label:'Finale & Coda',n:8,chs:[50,51,52,53,54,55,56,57]},
- {id:'bm',label:'Back matter',chs:[58,59,60]}
+ {id:'p8',label:'Finale & Coda',n:8,chs:[50,51,52,53,54,55,56,57]}
 ];
 function partById(id){for(var i=0;i<PARTS.length;i++)if(PARTS[i].id===id)return PARTS[i];return PARTS[0]}
 function partOfCh(ch){for(var i=0;i<PARTS.length;i++)if(PARTS[i].chs.indexOf(ch)>-1)return PARTS[i];return partById('bk')}
@@ -1112,7 +1110,7 @@ function bindPane(tab){
     refreshExportStats();
   }
 }
-var EXCH=[];(function(){for(var c=0;c<=60;c++)EXCH.push(c)})();
+var EXCH=[];(function(){for(var c=0;c<=57;c++)EXCH.push(c)})();
 function slug(t){return String(t).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)}
 function fileFor(ch){return CHF[ch]||('oldie-'+(ch===0?'prelude':ch===57?'coda':ch>57?'appendix-'+ch:'chapter-'+String(ch).padStart(2,'0'))+(chTitle(ch)?'-'+slug(chTitle(ch)):'')+'.md')}
 function chapterText(ch){
