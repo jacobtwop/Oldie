@@ -64,8 +64,8 @@ h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
 
 /* main grid */
 .main{display:grid;gap:14px;grid-template-columns:1fr;align-items:start}
-@media(min-width:900px){.main{grid-template-columns:270px minmax(0,1fr)}.tools{grid-column:1/-1}}
-@media(min-width:1180px){.main{grid-template-columns:270px minmax(0,1fr) 330px}.tools{grid-column:auto}}
+@media(min-width:900px){.main{grid-template-columns:var(--mapw,270px) minmax(0,1fr)}.tools{grid-column:1/-1}}
+@media(min-width:1180px){.main{grid-template-columns:var(--mapw,270px) minmax(0,1fr) var(--toolw,330px)}.tools{grid-column:auto}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
 
 /* map */
@@ -153,6 +153,26 @@ details.qs ul{margin:8px 0 2px;padding-left:18px;display:grid;gap:5px;font-size:
 .writer.focus #ta{min-height:0;height:100%;resize:none;font-size:20px;max-width:760px;margin:0 auto}
 .writer.focus .w-head{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
 .stamp{position:absolute;pointer-events:none}
+/* resizable panes (Nov 17): drag the bar under the writing window, and the edges of the map and tools columns */
+.hgrip{display:none;height:18px;cursor:row-resize;touch-action:none;align-items:center;justify-content:center;border-top:1px solid var(--line);background:var(--panel2);user-select:none;-webkit-user-select:none}
+.hgrip::before{content:"";width:56px;height:4px;border-radius:4px;background:var(--line);transition:background .15s,width .15s}
+.hgrip:hover::before,.hgrip:focus-visible::before,.hgrip.drag::before{background:var(--wild);width:84px}
+.hgrip:focus-visible,.vgrip:focus-visible{outline:2px solid var(--wild);outline-offset:-2px}
+.writer:not(.focus) .hgrip{display:flex}
+.stage>.writer.sized:not(.focus){flex:0 0 auto;grid-template-rows:auto auto auto}
+.stage>.writer.sized:not(.focus) #ta{min-height:0;align-self:start;height:var(--tah,340px)}
+.main{position:relative}
+.vgrip{display:none;position:absolute;top:0;bottom:0;width:14px;cursor:col-resize;touch-action:none;z-index:5;user-select:none;-webkit-user-select:none}
+.vgrip::after{content:"";position:absolute;left:5px;top:14px;bottom:14px;width:4px;border-radius:4px;background:transparent;transition:background .15s}
+.main:hover .vgrip::after{background:var(--line)}
+.vgrip:hover::after,.vgrip:focus-visible::after,.vgrip.drag::after{background:var(--wild)}
+@media(min-width:900px){.vg-map{display:block;grid-column:1;grid-row:1;right:-14px}}
+@media(min-width:1180px){.vg-tools{display:block;grid-column:3;grid-row:1;left:-14px}}
+body.quiet .vg-tools{display:none!important}
+body.dragging-x,body.dragging-x *{cursor:col-resize!important;user-select:none!important}
+body.dragging-y,body.dragging-y *{cursor:row-resize!important;user-select:none!important}
+.writer.focus .hgrip{display:none}
+
 
 /* tools */
 .tools{display:grid;gap:10px;align-content:start}
@@ -231,7 +251,7 @@ body.letgo .wrap,body.letgo #fx{visibility:hidden}
 .rd span{font-size:13.5px;line-height:1.5;color:var(--ink)}
 body.quiet .war,body.quiet #tools,body.quiet .qs,body.quiet .checks,body.quiet .foot,body.quiet .notes .note:nth-child(n+2){display:none}
 body.quiet .notes{grid-template-columns:1fr}
-@media(min-width:900px){body.quiet .main{grid-template-columns:270px minmax(0,1fr)}}
+@media(min-width:900px){body.quiet .main{grid-template-columns:var(--mapw,270px) minmax(0,1fr)}}
 
 /* whole-book additions (Nov 14) */
 .part{display:grid;gap:6px}
@@ -315,6 +335,8 @@ table.w tr.sub td{color:var(--muted);padding-left:14px}
     <aside class="card map" id="map" aria-label="Book map"></aside>
     <main class="stage" id="stage"></main>
     <aside class="card tools" id="tools" aria-label="Tools"></aside>
+    <div class="vgrip vg-map" id="vg-map" role="separator" aria-orientation="vertical" aria-label="Resize the beat map. Arrow keys nudge it, Home resets." tabindex="0" title="Drag to resize the beat map. Double-click to reset."></div>
+    <div class="vgrip vg-tools" id="vg-tools" role="separator" aria-orientation="vertical" aria-label="Resize the tools column. Arrow keys nudge it, Home resets." tabindex="0" title="Drag to resize the tools column. Double-click to reset."></div>
   </div>
   <p class="foot">Saved privately to your account when this page can reach it, and always to this browser.</p>
 </div>
@@ -917,7 +939,8 @@ function renderStage(){
       '<button class="btn" id="b-focus">Focus mode</button>'+
       '<button class="btn" id="b-sprint">10-minute sprint</button>'+
       '<button class="btn go" id="b-done">'+(s.done?'Done ✓ (undo)':'Mark done')+'</button></div></div>'+
-    '<textarea id="ta" spellcheck="true" placeholder="'+(pl?'The chapter text lives here. Edit it, trim it, or paste a new version.':'Write here, or paste the version you\'re trimming. Rough is fine.')+'"></textarea></div>'+locksHtml(s);
+    '<textarea id="ta" spellcheck="true" placeholder="'+(pl?'The chapter text lives here. Edit it, trim it, or paste a new version.':'Write here, or paste the version you\'re trimming. Rough is fine.')+'"></textarea>'+
+    '<div class="hgrip" id="hgrip" role="separator" aria-orientation="horizontal" aria-label="Resize the writing window. Arrow keys nudge it, Home resets." tabindex="0" title="Drag down for a taller writing window. Double-click to reset."></div></div>'+locksHtml(s);
   $('stage').innerHTML=h;
   var bnEl=$('bn');
   bnEl.value=(state.meta.notes||{})[cur]||'';
@@ -925,6 +948,7 @@ function renderStage(){
   bnEl.addEventListener('input',function(){state.meta.notes=state.meta.notes||{};state.meta.notes[cur]=bnEl.value;scheduleSave('meta')});
   var ta=$('ta');ta.value=s.text;
   ta.addEventListener('input',onInput);
+  paneApply();wireHGrip();
   $('tgt').addEventListener('change',function(e){var v=Math.max(50,Math.min(8000,parseInt(e.target.value,10)||b.target));bs(cur).target=v;e.target.value=v;scheduleSave('beat-'+cur);updateAll()});
   $('b-focus').addEventListener('click',toggleFocus);
   $('b-sprint').addEventListener('click',function(){startSprint(10)});
@@ -1563,8 +1587,78 @@ function applyTheme(){var t=state.meta.theme;if(t)document.documentElement.setAt
 
 function renderAll(){partOpen[viewLater?'bk':partOfUnit(cur).id]=true;applyTheme();renderHeader();renderMap();renderStage();renderTools();renderTimer();renderEndBtn()}
 
+/* ---------- resizable panes (Nov 17) ---------- */
+var PANEK='wwb.panes',panes={map:0,tools:0,ta:0};
+(function(){try{var p=JSON.parse(localStorage.getItem(PANEK)||'null');if(p&&typeof p==='object'){panes.map=+p.map||0;panes.tools=+p.tools||0;panes.ta=+p.ta||0}}catch(e){}})();
+function paneSave(){try{localStorage.setItem(PANEK,JSON.stringify(panes))}catch(e){}}
+function paneApply(){
+  var r=document.documentElement.style;
+  if(panes.map)r.setProperty('--mapw',panes.map+'px');else r.removeProperty('--mapw');
+  if(panes.tools)r.setProperty('--toolw',panes.tools+'px');else r.removeProperty('--toolw');
+  var ta=$('ta'),w=$('writer');
+  if(ta&&w){if(panes.ta){w.classList.add('sized');ta.style.setProperty('--tah',panes.ta+'px')}else{w.classList.remove('sized');ta.style.removeProperty('--tah')}}
+}
+function clampTa(h){return Math.max(160,Math.min(8000,Math.round(h)))}
+function dragPane(grip,e,axis,start,move){
+  if(e.button!==undefined&&e.button!==0)return;
+  e.preventDefault();
+  try{grip.setPointerCapture(e.pointerId)}catch(_){}
+  var lastX=e.clientX,lastY=e.clientY,sx=window.scrollX,sy=window.scrollY,raf=0,done=false,base=start();
+  grip.classList.add('drag');document.body.classList.add('dragging-'+axis);
+  function frame(){
+    if(done)return;
+    if(axis==='y'){var H=window.innerHeight;if(lastY>H-32)window.scrollBy(0,Math.min(18,(lastY-(H-32))/3+3));else if(lastY<32&&window.scrollY>0)window.scrollBy(0,-Math.min(18,(32-lastY)/3+3))}
+    move(base,(lastX+window.scrollX)-(e.clientX+sx),(lastY+window.scrollY)-(e.clientY+sy));
+    raf=requestAnimationFrame(frame);
+  }
+  function mv(ev){lastX=ev.clientX;lastY=ev.clientY}
+  function up(ev){
+    done=true;cancelAnimationFrame(raf);
+    grip.classList.remove('drag');document.body.classList.remove('dragging-x','dragging-y');
+    grip.removeEventListener('pointermove',mv);grip.removeEventListener('pointerup',up);grip.removeEventListener('pointercancel',up);
+    try{grip.releasePointerCapture(ev.pointerId)}catch(_){}
+    paneSave();
+  }
+  grip.addEventListener('pointermove',mv);grip.addEventListener('pointerup',up);grip.addEventListener('pointercancel',up);
+  frame();
+}
+function wireHGrip(){
+  var g=$('hgrip');if(!g)return;
+  g.addEventListener('pointerdown',function(e){
+    dragPane(g,e,'y',function(){return $('ta').getBoundingClientRect().height},function(h0,dx,dy){panes.ta=clampTa(h0+dy);paneApply()});
+  });
+  g.addEventListener('dblclick',function(){panes.ta=0;paneApply();paneSave()});
+  g.addEventListener('keydown',function(e){
+    var step=e.shiftKey?200:50,h=panes.ta||$('ta').getBoundingClientRect().height;
+    if(e.key==='ArrowDown'){panes.ta=clampTa(h+step)}else if(e.key==='ArrowUp'){panes.ta=clampTa(h-step)}else if(e.key==='Home'){panes.ta=0}else return;
+    e.preventDefault();paneApply();paneSave();
+  });
+}
+function colLimits(key){
+  var main=document.querySelector('.main'),cols=getComputedStyle(main).gridTemplateColumns.split(' ').length;
+  var other=key==='map'?(cols>2?$('tools').getBoundingClientRect().width:0):$('map').getBoundingClientRect().width;
+  var gaps=cols>2?28:14,max=main.getBoundingClientRect().width-gaps-other-380;
+  return key==='map'?{min:200,max:Math.max(200,Math.min(560,max))}:{min:240,max:Math.max(240,Math.min(680,max))};
+}
+function wireColGrips(){
+  [['vg-map','map',1],['vg-tools','tools',-1]].forEach(function(c){
+    var g=$(c[0]),key=c[1],dir=c[2];if(!g)return;
+    g.addEventListener('pointerdown',function(e){
+      var L=colLimits(key);
+      dragPane(g,e,'x',function(){return $(key).getBoundingClientRect().width},function(w0,dx){panes[key]=Math.round(Math.max(L.min,Math.min(L.max,w0+dir*dx)));paneApply()});
+    });
+    g.addEventListener('dblclick',function(){panes[key]=0;paneApply();paneSave()});
+    g.addEventListener('keydown',function(e){
+      var L=colLimits(key),w=panes[key]||$(key).getBoundingClientRect().width,step=e.shiftKey?60:20;
+      if(e.key==='ArrowRight')w+=dir*step;else if(e.key==='ArrowLeft')w-=dir*step;else if(e.key==='Home'){panes[key]=0;paneApply();paneSave();e.preventDefault();return}else return;
+      panes[key]=Math.round(Math.max(L.min,Math.min(L.max,w)));e.preventDefault();paneApply();paneSave();
+    });
+  });
+}
+
 loadLocal();loadSession();
 if(BY[state.meta.last])cur=state.meta.last;
+paneApply();wireColGrips();
 renderAll();
 if(migratedNow){toast('Chapters renumbered: Twelve is now Twelve and Thirteen, and the memories are Fourteen. Your drafts and notes moved with them. A copy of how things were is kept in this browser.',11000)}
 setSync('local');bootStore();if(!window.claude)cloudPull();
